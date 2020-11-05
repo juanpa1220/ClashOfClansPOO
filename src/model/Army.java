@@ -1,6 +1,6 @@
 package model;
 
-public class Army {
+public class Army extends Thread{
     private String name;
     private String dirImage;
     private int appearanceLevel;
