@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.WarriorPicker">
+    <VBox prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #4a525b">
+        <Pane prefHeight="50.0" prefWidth="600.0">
+            <ImageView fitHeight="100.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" x="150.0" y="15.0">
+                <Image url="@../asserts/imgs/chooseyourwarriors.png" />
+            </ImageView>
+        </Pane>
+        <ScrollPane prefHeight="450.0" prefWidth="600.0" />
+        <HBox prefHeight="100.0" prefWidth="600.0">
+            <Pane prefHeight="100.0" prefWidth="150.0">
+                <Label layoutX="55.0" layoutY="30.0" text="Level:">
+                    <font>
+                        <Font name="Mshtakan" size="22.0" />
+                    </font>
+                    <textFill>
+                        <LinearGradient startX="1.0" startY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="1.0" green="1.0" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </textFill>
+                </Label>
+                <Label fx:id="lblLevel" alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="30.0" prefHeight="20.0" prefWidth="30.0" text="12" textAlignment="CENTER">
+                    <font>
+                        <Font name="Mshtakan" size="22.0" />
+                    </font>
+                    <textFill>
+                        <LinearGradient startX="1.0" startY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="1.0" green="1.0" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </textFill>
+                </Label>
+            </Pane>
+            <Pane prefHeight="100.0" prefWidth="300.0">
+                <Button id="record-sales" layoutX="50.0" layoutY="25.0" mnemonicParsing="false" onAction="#onStartGameAction" prefHeight="50.0" prefWidth="200.0" stylesheets="@../asserts/styles/styledButtons.css" text="Start Game" />
+            </Pane>
+            <Pane prefHeight="100.0" prefWidth="150.0">
+                <Label layoutY="20.0" text="Remaining">
+                    <font>
+                        <Font name="Mshtakan" size="22.0" />
+                    </font>
+                    <textFill>
+                        <LinearGradient startX="1.0" startY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="1.0" green="1.0" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </textFill>
+                </Label>
+                <Label layoutY="45.0" text="Fields:">
+                    <font>
+                        <Font name="Mshtakan" size="22.0" />
+                    </font>
+                    <textFill>
+                        <LinearGradient startX="1.0" startY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="1.0" green="1.0" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </textFill>
+                </Label>
+                <Label fx:id="lblRemainingFields" layoutX="80.0" layoutY="45.0" text="0">
+                    <font>
+                        <Font name="Mshtakan" size="22.0" />
+                    </font>
+                    <textFill>
+                        <LinearGradient startX="1.0" startY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="1.0" green="1.0" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </textFill>
+                </Label>
+            </Pane>
+        </HBox>
+    </VBox>
+</AnchorPane>

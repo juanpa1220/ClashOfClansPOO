@@ -10,11 +10,18 @@ import java.util.ArrayList;
 
 public class BoardController {
     public GridPane gridPane;
+    public static BoardController boardController;
     private final ArrayList<BoardItem> board = new ArrayList<>();
 
-    public void createBoard(GridPane gridPane) {
-        this.gridPane = gridPane;
+    public BoardController() {
+        boardController = this;
+    }
 
+    public static BoardController getInstance() {
+        return boardController;
+    }
+
+    public void createBoard() {
         int index = 0;
         for (int row = 0; row < 20; row++) {
             for (int col = 0; col < 20; col++) {
@@ -27,7 +34,7 @@ public class BoardController {
                 temLabel.setPrefWidth(30);
                 temLabel.setText(String.valueOf(index));
                 temLabel.setId(String.valueOf(index));
-                gridPane.add(temLabel, col, row);
+                this.gridPane.add(temLabel, col, row);
                 this.board.add(new BoardItem(temLabel, row, col, index, false));
                 index++;
             }
@@ -35,10 +42,10 @@ public class BoardController {
     }
 
     public void initBoard() {
-        Image image = new Image(getClass().getResourceAsStream("../asserts/imgs/dragon.gif"));
+        Image image = new Image(BoardController.class.getResourceAsStream("../asserts/imgs/dragon.gif"));
 
         for (BoardItem item : this.board) {
-            item.getLabel().setStyle("-fx-border-color: #0e0e0e");
+//            item.getLabel().setStyle("-fx-border-color: #0e0e0e");
             item.getLabel().setText("");
             item.getLabel().setGraphic(new ImageView(image));
         }
