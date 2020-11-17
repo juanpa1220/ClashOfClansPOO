@@ -4,6 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+// Same
 public class Main extends Application {
 
     @Override
@@ -11,7 +12,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("view/mainWindow.fxml"));
         primaryStage.setTitle("Herencia de Clanes");
         primaryStage.setScene(new Scene(root, 640, 780));
-        primaryStage.show();
+        primaryStage.show();  
     }
 
 
