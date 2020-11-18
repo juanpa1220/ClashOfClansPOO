@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Dragon",
+    "imagePath": "../../imgs/dragon.gif",
+    "type": "Aerial",
+    "appearanceLevel": 1,
+    "life": 25,
+    "hits": 3,
+    "housing": 10
+  }
+]

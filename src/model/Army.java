@@ -7,16 +7,16 @@ public class Army extends Thread{
     private int level;
     private int life;
     private int hits;
-    private int field;
+    private int housingSpace;
 
 
-    public Army(String name, String dirImage, int appearanceLevel, int level, int life, int hits, int field) {
+    public Army(String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
         this.name = name;
         this.dirImage = dirImage;
         this.appearanceLevel = appearanceLevel;
         this.level = level;
         this.life = life;
         this.hits = hits;
-        this.field = field;
+        this.housingSpace = housingSpace;
     }
 }

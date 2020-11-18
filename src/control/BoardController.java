@@ -44,10 +44,11 @@ public class BoardController {
     public void initBoard() {
         Image image = new Image(BoardController.class.getResourceAsStream("../asserts/imgs/dragon.gif"));
 
-        for (BoardItem item : this.board) {
-//            item.getLabel().setStyle("-fx-border-color: #0e0e0e");
-            item.getLabel().setText("");
-            item.getLabel().setGraphic(new ImageView(image));
-        }
+        this.board.get(50).getLabel().setGraphic(new ImageView(image));
+//        for (BoardItem item : this.board) {
+////            item.getLabel().setStyle("-fx-border-color: #0e0e0e");
+//            item.getLabel().setText("");
+//            item.getLabel().setGraphic(new ImageView(image));
+//        }
     }
 }
