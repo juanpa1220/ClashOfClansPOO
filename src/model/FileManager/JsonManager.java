@@ -6,9 +6,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class JsonManager {
 
@@ -16,7 +16,6 @@ public class JsonManager {
         JSONParser jsonParser = new JSONParser();
         try (FileReader reader = new FileReader(path)) {
             JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
-            System.out.println(jsonArray);
             return jsonArray;
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -24,18 +23,28 @@ public class JsonManager {
         return null;
     }
 
-    public static void jsonWriter(String filename, JSONObject jsonObject) throws Exception {
-//        JSONObject sampleObject = new JSONObject();
-//        sampleObject.put("name", "Stackabuser");
-//        sampleObject.put("age", 35);
-//
-//        JSONArray messages = new JSONArray();
-//        messages.add("Hey!");
-//        messages.add("What's up?!");
-//
-//        sampleObject.put("messages", messages);
+    public static boolean jsonWriter(JSONObject jsonObject) throws Exception {
 
-        Files.write(Paths.get(filename), jsonObject.toJSONString().getBytes());
+        String filename = "src/asserts/docs/gameSettings/warriors.json";
+        JSONArray oldFile = jsonReader(filename);
+
+        if (oldFile != null) {
+            JSONArray temObject = new JSONArray();
+            for (Object obj : oldFile) {
+                temObject.add(obj);
+            }
+            temObject.add(jsonObject);
+
+            try (FileWriter file = new FileWriter(filename)) {
+                file.write(temObject.toJSONString());
+                file.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return true;
+        }
+        return false;
     }
 
 }

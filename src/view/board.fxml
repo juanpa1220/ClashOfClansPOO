@@ -2,7 +2,8 @@
 
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" style="-fx-border-color: #3b3f41;" xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane prefHeight="600.0" prefWidth="600.0" style="-fx-border-color: #000000; -fx-background-color: #c2cdd4"
+            xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.BoardController">
     <children>
         <GridPane fx:id="gridPane" maxWidth="600.0" minHeight="600.0" minWidth="600.0" prefHeight="600.0"

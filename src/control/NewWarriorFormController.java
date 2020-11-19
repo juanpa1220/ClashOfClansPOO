@@ -1,10 +1,13 @@
 package control;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import model.FileManager.JsonManager;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
+
+import java.io.File;
 
 public class NewWarriorFormController {
     public ComboBox<String> comboBox;
@@ -27,6 +30,8 @@ public class NewWarriorFormController {
     }
 
     public void setUpComponents() {
+        this.txtName.setText("");
+        this.txtImagePath.setText("/asserts/imgs/");
         this.comboBox.getItems().setAll(
                 "Contact",
                 "Medium Range",
@@ -34,7 +39,7 @@ public class NewWarriorFormController {
                 "Beast",
                 "Hero"
         );
-
+        this.comboBox.setPromptText("Choose your warrior type");
         this.lifeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 10000, Integer.parseInt("0")));
         this.hitsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
@@ -43,13 +48,67 @@ public class NewWarriorFormController {
                 0, 15, Integer.parseInt("0")));
         this.housingSpaceSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 10000, Integer.parseInt("0")));
-
     }
 
-    public void onOkAction(ActionEvent actionEvent) {
+    public void onOkAction(ActionEvent actionEvent) throws Exception {
+        String name = txtName.getText();
+        String path = txtImagePath.getText();
+        String type = comboBox.getValue();
+        int appearLevel = appearLevelSpinner.getValue();
+        int life = lifeSpinner.getValue();
+        int hits = hitsSpinner.getValue();
+        int housingSpace = housingSpaceSpinner.getValue();
+
+
+        if (name.equals("") || path.equals("/asserts/imgs/") || path.equals("") ||
+                type == null || appearLevel == 0 || life == 0 || hits == 0 || housingSpace == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid data");
+            alert.setContentText("Make sure you field every space");
+            alert.showAndWait();
+        } else {
+            File file = new File(System.getProperty("user.dir") + "/src" + path);
+            if (file.exists()) {
+                JSONObject newWarrior = new JSONObject();
+                newWarrior.put("name", name);
+                newWarrior.put("imagePath", ".." + path);
+                newWarrior.put("type", type);
+                newWarrior.put("appearanceLevel", String.valueOf(appearLevel));
+                newWarrior.put("life", String.valueOf(life));
+                newWarrior.put("hits", String.valueOf(hits));
+                newWarrior.put("housing", String.valueOf(housingSpace));
+                JSONObject newWarrior2 = new JSONObject();
+                newWarrior2.put("warrior", newWarrior);
+
+                boolean response = JsonManager.jsonWriter(newWarrior2);
+                Alert alert;
+                if (response) {
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Congrats");
+                    alert.setHeaderText("Congrats");
+                    alert.setContentText("Your new warrior have been saved successfully");
+                } else {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Something went wrong");
+                    alert.setContentText("The new warrior could not be saved");
+                }
+                alert.showAndWait();
+                this.onCancelAction();
+
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Invalid image path");
+                alert.setContentText("Image path: " + file.getPath() + " does not exists");
+                alert.showAndWait();
+            }
+        }
     }
 
-    public void onCancelAction(ActionEvent actionEvent) {
+    public void onCancelAction() {
+        this.setUpComponents();
         this.mainWindowController.setChildRoot("warriorPicker");
     }
 
@@ -57,4 +116,5 @@ public class NewWarriorFormController {
     public void setParentRoot(MainWindowController mainWindowController) {
         this.mainWindowController = mainWindowController;
     }
+
 }

@@ -1,7 +1,11 @@
 package model.Warriors;
 
-public class Hero extends ContactWarrior{
-    public Hero(String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
-        super(name, dirImage, appearanceLevel, level, life, hits, housingSpace);
+import model.BoardItem;
+
+import java.util.ArrayList;
+
+public class Hero extends ContactWarrior {
+    public Hero(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
+        super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace);
     }
 }

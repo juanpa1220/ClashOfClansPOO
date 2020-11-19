@@ -4,25 +4,38 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="primaryStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="640.0" style="-fx-background-color: #549194;" stylesheets="@../asserts/styles/anchor.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.MainWindowController">
+<AnchorPane fx:id="primaryStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="780.0" prefWidth="640.0" style="-fx-background-color: #549194;"
+            stylesheets="@../asserts/styles/anchor.css" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.MainWindowController">
     <ToolBar id="bevel-grey" prefHeight="40.0" prefWidth="640.0" stylesheets="@../asserts/styles/styledButtons.css">
-        <Button id="dark-blue" mnemonicParsing="false" prefHeight="35.0" prefWidth="121.0" stylesheets="@../asserts/styles/styledButtons.css" text="New Game" />
-        <Button id="dark-blue" mnemonicParsing="false" prefHeight="35.0" prefWidth="121.0" text="Open Game" />
-        <Button id="dark-blue" disable="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="121.0" text="Save Game" />
-        <Button id="dark-blue" fx:id="btnNewWarrior" disable="true" mnemonicParsing="false" onAction="#onActionNewWarrior" prefHeight="35.0" prefWidth="121.0" text="New Warrior" />
-        <Button id="dark-blue" disable="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="121.0" text="Skip Level" />
+        <Button id="dark-blue" fx:id="btnNewGame" mnemonicParsing="false" prefHeight="35.0" prefWidth="121.0"
+                stylesheets="@../asserts/styles/styledButtons.css" text="New Game"/>
+        <Button id="dark-blue" fx:id="btnOpenGame" mnemonicParsing="false" prefHeight="35.0" prefWidth="121.0"
+                text="Open Game"/>
+        <Button id="dark-blue" fx:id="btnSaveGame" disable="true" mnemonicParsing="false" prefHeight="35.0"
+                prefWidth="121.0" text="Save Game"/>
+        <Button id="dark-blue" fx:id="btnNewWarrior" disable="true" mnemonicParsing="false"
+                onAction="#onActionNewWarrior" prefHeight="35.0" prefWidth="121.0" text="New Warrior"/>
+        <Button id="dark-blue" fx:id="btnSkipLevel" disable="true" mnemonicParsing="false" prefHeight="35.0"
+                prefWidth="121.0" text="Skip Level"/>
     </ToolBar>
-    <VBox maxHeight="700.0" maxWidth="600.0" minHeight="700.0" minWidth="600.0" prefHeight="700.0" prefWidth="600.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
+    <VBox maxHeight="700.0" maxWidth="600.0" minHeight="700.0" minWidth="600.0" prefHeight="700.0" prefWidth="600.0"
+          AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
+          AnchorPane.topAnchor="60.0">
         <AnchorPane prefHeight="100.0" prefWidth="600.0">
-            <ImageView fitHeight="150.0" fitWidth="550.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="15.0">
-                <Image url="@../asserts/imgs/title.png" />
+            <ImageView fitHeight="150.0" fitWidth="550.0" pickOnBounds="true" preserveRatio="true"
+                       AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="15.0">
+                <Image url="@../asserts/imgs/title.png"/>
             </ImageView>
         </AnchorPane>
         <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0">
             <ImageView fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" x="4.0" y="4.0">
-                <Image url="@../asserts/imgs/background.gif" />
+                <Image url="@../asserts/imgs/background.gif"/>
             </ImageView>
-            <Button id="record-sales" mnemonicParsing="false" onAction="#onActionInitGame" prefHeight="50.0" prefWidth="200.0" stylesheets="@../asserts/styles/styledButtons.css" text="Start Game" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="440.0" />
+            <Button id="record-sales" mnemonicParsing="false" onAction="#onActionInitGame" prefHeight="50.0"
+                    prefWidth="200.0" stylesheets="@../asserts/styles/styledButtons.css" text="Start Game"
+                    AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="440.0"/>
         </AnchorPane>
     </VBox>
 </AnchorPane>

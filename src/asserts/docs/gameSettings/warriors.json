@@ -1,11 +1,24 @@
 [
   {
-    "name": "Dragon",
-    "imagePath": "../../imgs/dragon.gif",
-    "type": "Aerial",
-    "appearanceLevel": 1,
-    "life": 25,
-    "hits": 3,
-    "housing": 10
+    "warrior": {
+      "hits": "3",
+      "appearanceLevel": "1",
+      "housing": "10",
+      "imagePath": "..\/asserts\/imgs\/dragon.gif",
+      "name": "Dragon",
+      "type": "Aerial",
+      "life": "25"
+    }
+  },
+  {
+    "warrior": {
+      "hits": "3",
+      "appearanceLevel": "1",
+      "housing": "4",
+      "imagePath": "..\/asserts\/imgs\/dragon.gif",
+      "name": "drag",
+      "type": "Contact",
+      "life": "2"
+    }
   }
 ]
