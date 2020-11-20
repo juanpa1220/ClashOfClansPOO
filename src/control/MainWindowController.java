@@ -55,7 +55,7 @@ public class MainWindowController {
 
     public void starGameLevel() {
         this.setChildRoot("board");
-        this.game.start();
+        this.game.startLevel();
     }
 
     public void onActionNewWarrior() {
@@ -92,7 +92,7 @@ public class MainWindowController {
         dialog.setHeaderText("Please enter your credentials");
 
         // Set the icon (must be included in the project).
-        dialog.setGraphic(new ImageView(this.getClass().getResource("../asserts/imgs/login.png").toString()));
+        dialog.setGraphic(new ImageView(this.getClass().getResource("../asserts/imgsGUI/login.png").toString()));
 
         // Set the button types.
         ButtonType loginButtonType = new ButtonType("Login", ButtonBar.ButtonData.OK_DONE);
@@ -138,8 +138,6 @@ public class MainWindowController {
 
         AtomicBoolean authenticate = new AtomicBoolean(false);
         result.ifPresent(usernamePassword -> {
-            System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-
             if (usernamePassword.getKey().equals("admin") && usernamePassword.getValue().equals("admin")) {
                 authenticate.set(true);
             }

@@ -22,7 +22,7 @@
       <Separator prefWidth="200.0" style="-fx-border-color: #000000;" />
         <Pane prefHeight="50.0" prefWidth="600.0">
             <ImageView fitHeight="100.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true" x="170.0" y="10.0">
-                <Image url="@../asserts/imgs/chooseyourwarriors.png" />
+                <Image url="@../asserts/imgsGUI/chooseyourwarriors.png" />
             </ImageView>
         </Pane>
       <Separator prefWidth="200.0" style="-fx-border-color: #000000;">

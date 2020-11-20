@@ -5,55 +5,129 @@ import model.BoardItem;
 import model.Interfaces.IMakeNoise;
 import model.Interfaces.IMove;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
-    private boolean runnig = true;
-    private boolean paused = false;
-    private ArrayList<BoardItem> refBoard;
-    private int currentPosition;
-    private int lastPosition;
+    private final ArrayList<BoardItem> refBoard;
 
     public ContactWarrior(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace);
         this.refBoard = refBoard;
-        this.currentPosition = new Random().nextInt(256);
-        this.lastPosition = -1;
+        this.setLastPosition(-1);
+    }
+
+    private void setInitPosition() {
+        boolean flag = true;
+        while (flag) {
+            int index = new Random().nextInt(399);
+            if (refBoard.get(index).isAvailable()) {
+                this.setCurrentPosition(index);
+                this.refBoard.get(index).setWarrior(this);
+                flag = false;
+            }
+        }
+    }
+
+    private void setOpponent() {
+        if (this.getOpponents().size() > 0) {
+            Warrior opponent = this.getOpponents().get(new Random().nextInt(this.getOpponents().size()));
+            this.setOpponent(opponent);
+        } else {
+            this.setOpponent(null);
+        }
     }
 
     @Override
     public void run() {
-        while (runnig) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    move();
+        int iterations = 0;
+        while (this.isRunning()) {
+
+            int finalIterations = iterations;
+            Platform.runLater(() -> {
+                if (finalIterations == 0) {
+                    setInitPosition();
                 }
+                if (getOpponent() == null) {
+                    setOpponent();
+                }
+                move();
             });
             try {
                 sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
+            iterations++;
         }
     }
 
     @Override
     public void makeNoise() {
+    }
 
+    @Override
+    public void attack() {
+        this.makeNoise();
+        Warrior opponent = super.getOpponent();
+        opponent.reduceLife(this.getHits());
+        if (opponent.getLife() <= 0) {
+            this.killOpponent(opponent);
+            this.setOpponent();
+        }
     }
 
     @Override
     public void move() {
-        if (!this.refBoard.get(this.currentPosition).isAvailable()) {
-            if (lastPosition != -1) {
-                this.refBoard.get(this.lastPosition).removeTroop();
+        if (this.getLastPosition() != -1) {
+            this.refBoard.get(this.getLastPosition()).removeTroop();
+        }
+
+        this.refBoard.get(this.getCurrentPosition()).setWarrior(this);
+        this.setLastPosition(this.getCurrentPosition());
+
+        if (this.getOpponent() != null) {
+            Point opponentPosition = this.refBoard.get(this.getOpponent().getCurrentPosition()).getPosition();
+            Point myPosition = this.refBoard.get(this.getCurrentPosition()).getPosition();
+            Point newPosition = new Point(myPosition.x, myPosition.y);
+
+            if (opponentPosition.x < myPosition.x) {
+                int tem = myPosition.x - 1;
+                if (tem >= 0 && tem < 20) {
+                    newPosition.x = tem;
+                }
+            } else if (opponentPosition.x > myPosition.x) {
+                int tem = myPosition.x + 1;
+                if (tem >= 0 && tem < 20) {
+                    newPosition.x = tem;
+                }
             }
-            this.refBoard.get(currentPosition).setTroop(this);
-            this.lastPosition = this.currentPosition;
-            this.currentPosition += 1;
+            if (opponentPosition.y < myPosition.y) {
+                int tem = myPosition.y - 1;
+                if (tem >= 0 && tem < 20) {
+                    newPosition.y = tem;
+                }
+            } else if (opponentPosition.y > myPosition.y) {
+                int tem = myPosition.y + 1;
+                if (tem >= 0 && tem < 20) {
+                    newPosition.y = tem;
+                }
+            }
+
+            int index = newPosition.y * 20 + newPosition.x;
+            if (newPosition.x == opponentPosition.x && newPosition.y == opponentPosition.y) {
+                this.attack();
+                this.setCurrentPosition(this.getCurrentPosition());
+
+            } else if (refBoard.get(index).isAvailable()) {
+                this.setCurrentPosition(index);
+            } else {
+                this.setCurrentPosition(this.getCurrentPosition());
+            }
+
+        } else {
+            this.setCurrentPosition(this.getCurrentPosition());
         }
     }
 }

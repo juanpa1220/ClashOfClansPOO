@@ -1,24 +1,46 @@
 [
   {
     "warrior": {
-      "hits": "3",
+      "hits": "1",
       "appearanceLevel": "1",
       "housing": "10",
-      "imagePath": "..\/asserts\/imgs\/dragon.gif",
+      "imagePath": "..\/asserts\/imgs\/dragon2.gif",
       "name": "Dragon",
-      "type": "Aerial",
-      "life": "25"
+      "type": "Contact",
+      "life": "5"
     }
   },
   {
     "warrior": {
-      "hits": "3",
+      "hits": "1",
       "appearanceLevel": "1",
       "housing": "4",
-      "imagePath": "..\/asserts\/imgs\/dragon.gif",
+      "imagePath": "..\/asserts\/imgs\/arquera.gif",
       "name": "drag",
       "type": "Contact",
-      "life": "2"
+      "life": "5"
+    }
+  },
+  {
+    "warrior": {
+      "hits": "1",
+      "appearanceLevel": "1",
+      "housing": "4",
+      "imagePath": "..\/asserts\/imgs\/asesina.gif",
+      "name": "drag",
+      "type": "Contact",
+      "life": "5"
+    }
+  },
+  {
+    "warrior": {
+      "hits": "1",
+      "appearanceLevel": "1",
+      "housing": "4",
+      "imagePath": "..\/asserts\/imgs\/saqueador.gif",
+      "name": "drag",
+      "type": "Contact",
+      "life": "5"
     }
   }
 ]

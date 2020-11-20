@@ -11,6 +11,11 @@ public class MediumRangeWarriors extends Warrior implements IMove {
     }
 
     @Override
+    public void attack() {
+
+    }
+
+    @Override
     public void move() {
 
     }

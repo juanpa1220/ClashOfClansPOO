@@ -26,12 +26,12 @@
         <AnchorPane prefHeight="100.0" prefWidth="600.0">
             <ImageView fitHeight="150.0" fitWidth="550.0" pickOnBounds="true" preserveRatio="true"
                        AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="15.0">
-                <Image url="@../asserts/imgs/title.png"/>
+                <Image url="@../asserts/imgsGUI/title.png"/>
             </ImageView>
         </AnchorPane>
         <AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="600.0">
             <ImageView fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" x="4.0" y="4.0">
-                <Image url="@../asserts/imgs/background.gif"/>
+                <Image url="@../asserts/imgsGUI/background.gif"/>
             </ImageView>
             <Button id="record-sales" mnemonicParsing="false" onAction="#onActionInitGame" prefHeight="50.0"
                     prefWidth="200.0" stylesheets="@../asserts/styles/styledButtons.css" text="Start Game"

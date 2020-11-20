@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import model.FileManager.JsonManager;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 
 import java.io.File;

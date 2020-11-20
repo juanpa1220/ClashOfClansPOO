@@ -1,5 +1,5 @@
 package model.Interfaces;
 
 public interface IGrowUp {
-    void growUp();
+    public abstract void growUp();
 }

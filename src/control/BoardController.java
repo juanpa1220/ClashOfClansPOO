@@ -32,19 +32,13 @@ public class BoardController {
                 temLabel.setMaxWidth(30);
                 temLabel.setMinWidth(30);
                 temLabel.setPrefWidth(30);
-                /* temLabel.setId(String.valueOf(index)); */
+                temLabel.setStyle("-fx-border-color: #4a4f51");
+//                temLabel.setId(String.valueOf(index));
+//                temLabel.setText(String.valueOf(col) + "," + String.valueOf(row));
                 this.gridPane.add(temLabel, col, row);
-                this.board.add(new BoardItem(temLabel, row, col, index, false));
+                this.board.add(new BoardItem(temLabel, row, col, index, true));
                 index++;
             }
-        }
-    }
-
-    public void initBoard() {
-        Image image = new Image(BoardController.class.getResourceAsStream("../asserts/imgs/dragon.gif"));
-        for (BoardItem item : this.board) {
-//            item.getLabel().setStyle("-fx-border-color: #0e0e0e");
-            item.getLabel().setGraphic(new ImageView(image));
         }
     }
 

@@ -14,7 +14,7 @@
         <Pane prefHeight="50.0" prefWidth="600.0">
             <ImageView fitHeight="100.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true" x="170.0" y="10.0">
                 <image>
-                    <Image url="@../asserts/imgs/addANewWarrior.png"/>
+                    <Image url="@../asserts/imgsGUI/addANewWarrior.png"/>
                 </image>
             </ImageView>
         </Pane>
