@@ -1,17 +1,19 @@
 package model.Warriors;
 
 import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.BoardItem;
 import model.Interfaces.IMakeNoise;
 import model.Interfaces.IMove;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
     private final ArrayList<BoardItem> refBoard;
-
     public ContactWarrior(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace);
         this.refBoard = refBoard;
@@ -65,6 +67,13 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
 
     @Override
     public void makeNoise() {
+        String musicFile = "src/asserts/sounds/swordraw.mp3";     // For example
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+        //mediaplayer.stop();
+
+
     }
 
     @Override
