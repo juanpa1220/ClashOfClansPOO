@@ -41,10 +41,13 @@ public class NewWarriorFormController {
         this.comboBox.setPromptText("Choose your warrior type");
         this.lifeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 10000, Integer.parseInt("0")));
+        this.lifeSpinner.setEditable(true);
         this.hitsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 10000, Integer.parseInt("0")));
+        this.hitsSpinner.setEditable(true);
         this.appearLevelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 15, Integer.parseInt("0")));
+        this.hitsSpinner.setEditable(true);
         this.housingSpaceSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 10000, Integer.parseInt("0")));
     }

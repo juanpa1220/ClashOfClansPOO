@@ -14,23 +14,28 @@ import java.util.Random;
 
 public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
     private final ArrayList<BoardItem> refBoard;
-    public ContactWarrior(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
-        super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace);
+    private int notMoveCounter = 0;
+    String musicFile = "src/asserts/sounds/swordraw.mp3";     // For example
+    Media sound = new Media(new File(musicFile).toURI().toString());
+    MediaPlayer mediaPlayer = new MediaPlayer(sound);
+
+    public ContactWarrior(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace, String type) {
+        super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace, type);
         this.refBoard = refBoard;
         this.setLastPosition(-1);
     }
 
-    private void setInitPosition() {
-        boolean flag = true;
-        while (flag) {
-            int index = new Random().nextInt(399);
-            if (refBoard.get(index).isAvailable()) {
-                this.setCurrentPosition(index);
-                this.refBoard.get(index).setWarrior(this);
-                flag = false;
-            }
-        }
-    }
+//    private void setInitPosition() {
+//        boolean flag = true;
+//        while (flag) {
+//            int index = new Random().nextInt(399);
+//            if (refBoard.get(index).isAvailable()) {
+//                this.setCurrentPosition(index);
+//                this.refBoard.get(index).setWarrior(this);
+//                flag = false;
+//            }
+//        }
+//    }
 
     private void setOpponent() {
         if (this.getOpponents().size() > 0) {
@@ -49,7 +54,7 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
             int finalIterations = iterations;
             Platform.runLater(() -> {
                 if (finalIterations == 0) {
-                    setInitPosition();
+                    super.setInitPosition();
                 }
                 if (getOpponent() == null) {
                     setOpponent();
@@ -67,19 +72,14 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
 
     @Override
     public void makeNoise() {
-        String musicFile = "src/asserts/sounds/swordraw.mp3";     // For example
-        Media sound = new Media(new File(musicFile).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
-        //mediaplayer.stop();
-
-
+        mediaPlayer.stop();
     }
 
     @Override
     public void attack() {
         this.makeNoise();
-        Warrior opponent = super.getOpponent();
+        Warrior opponent = this.getOpponent();
         opponent.reduceLife(this.getHits());
         if (opponent.getLife() <= 0) {
             this.killOpponent(opponent);
@@ -127,16 +127,22 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
             int index = newPosition.y * 20 + newPosition.x;
             if (newPosition.x == opponentPosition.x && newPosition.y == opponentPosition.y) {
                 this.attack();
-                this.setCurrentPosition(this.getCurrentPosition());
 
             } else if (refBoard.get(index).isAvailable()) {
                 this.setCurrentPosition(index);
+                notMoveCounter = 0;
             } else {
-                this.setCurrentPosition(this.getCurrentPosition());
+                if (notMoveCounter >= 3) {
+                    this.setOpponent();
+                } else {
+                    newPosition.x = newPosition.x + new Random().nextInt((1 - -1) + 1) + -1;
+                    newPosition.y = newPosition.y + new Random().nextInt((1 - -1) + 1) + -1;
+                    index = newPosition.y * 20 + newPosition.x;
+                    this.setCurrentPosition(index);
+                    notMoveCounter++;
+                }
             }
 
-        } else {
-            this.setCurrentPosition(this.getCurrentPosition());
         }
     }
 }

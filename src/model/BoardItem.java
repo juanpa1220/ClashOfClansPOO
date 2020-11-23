@@ -1,6 +1,5 @@
 package model;
 
-import com.sun.javafx.scene.paint.GradientUtils;
 import control.BoardController;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,8 +10,8 @@ import java.awt.*;
 
 public class BoardItem {
     private final Label label;
-    private int row;
-    private int col;
+    private final int row;
+    private final int col;
     private int index;
     private boolean isAvailable;
     String backgroundDefaultColor = "#c2cdd4";

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class Army extends Thread {
     private final ArrayList<BoardItem> refBoard;
@@ -11,7 +12,7 @@ public abstract class Army extends Thread {
     private int life;
     private int hits;
     private final int housingSpace;
-
+    private int currentPosition;
 
     public Army(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
         this.refBoard = refBoard;
@@ -28,11 +29,24 @@ public abstract class Army extends Thread {
     @Override
     public String toString() {
         return "Army{" +
-                "name='" + name + '\'' +
+                "name='" + this.name + '\'' +
                 '}';
     }
 
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+
     public abstract void attack();
+
+    public String getTroopName() {
+        return this.name;
+    }
 
     public ArrayList<BoardItem> getRefBoard() {
         return refBoard;

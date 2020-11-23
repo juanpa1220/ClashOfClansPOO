@@ -12,8 +12,9 @@ import javafx.util.Pair;
 import model.Game;
 
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class MainWindowController {
@@ -48,29 +49,28 @@ public class MainWindowController {
         this.newWarriorFormController.setParentRoot(this);
 
         this.game = new Game(boardController, warriorPickerController);
+        this.game.showWarriorsPick();
 
 
         btnNewWarrior.setDisable(false);
     }
 
-    public void starGameLevel() {
+    public void starGameLevel(Hashtable<String, Integer> selectedWarriors) {
         this.setChildRoot("board");
+        this.game.setSelectedWarriors(selectedWarriors);
         this.game.startLevel();
     }
 
     public void onActionNewWarrior() {
-        boolean response = this.loginDialog();
-//        boolean response = true;
-        if (response) {
+        int response = this.loginDialog();
+        if (response == 1) {
             this.newWarriorFormController.setUpComponents();
             this.rootPane.getChildren().setAll(this.newWarriorFormPane);
-            game.addWarrior();
-        } else {
+        } else if (response == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Unauthenticated");
             alert.setContentText("Username or password invalid");
-
             alert.showAndWait();
         }
     }
@@ -85,7 +85,7 @@ public class MainWindowController {
         }
     }
 
-    private boolean loginDialog() {
+    private int loginDialog() {
         // Create the custom dialog.
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Login");
@@ -136,12 +136,14 @@ public class MainWindowController {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
-        AtomicBoolean authenticate = new AtomicBoolean(false);
+        AtomicInteger response = new AtomicInteger(-1);
         result.ifPresent(usernamePassword -> {
             if (usernamePassword.getKey().equals("admin") && usernamePassword.getValue().equals("admin")) {
-                authenticate.set(true);
+                response.set(1);
+            } else {
+                response.set(0);
             }
         });
-        return authenticate.get();
+        return response.get();
     }
 }
