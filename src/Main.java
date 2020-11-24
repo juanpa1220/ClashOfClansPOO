@@ -8,12 +8,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("view/sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 500, 700));
+        Parent root = FXMLLoader.load(getClass().getResource("view/mainWindow.fxml"));
+        primaryStage.setTitle("Herencia de Clanes");
+        primaryStage.setScene(new Scene(root, 640, 780));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

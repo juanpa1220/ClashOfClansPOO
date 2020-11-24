@@ -1,0 +1,14 @@
+.anchor {
+    /*-fx-background-image: url('../imgs/background.png');*/
+    /*-fx-background-size: 100% 100%;*/
+    /*-fx-background-color: #6eb8be,*/
+    /*linear-gradient(#6eb8be, #3a6264, #29494a)*/
+    /*-fx-background-image: linear-gradient(#6eb8be, #3a6264, #29494a);*/
+
+
+    -fx-background-color: #3c7fb1;
+}
+
+/*#anchor {*/
+/*    background-image: linear-gradient(#6eb8be, #3a6264, #29494a);*/
+/*}*/
