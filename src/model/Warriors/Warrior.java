@@ -9,7 +9,6 @@ import java.util.Random;
 public abstract class Warrior extends Army {
     private final String type;
     private boolean isEnemy;
-
     private int lastPosition;
     private ArrayList<Warrior> opponents;
     private Warrior opponent = null;
@@ -21,9 +20,6 @@ public abstract class Warrior extends Army {
         this.type = type;
     }
 
-    @Override
-    public abstract void attack();
-
     public void killOpponent(Warrior warrior) {
         if (this.getOpponents().contains(warrior)) {
             warrior.setRunning(false);
@@ -33,6 +29,7 @@ public abstract class Warrior extends Army {
         }
     }
 
+    @Override
     public void setInitPosition() {
         boolean flag = true;
         while (flag) {
@@ -47,6 +44,15 @@ public abstract class Warrior extends Army {
 
     public void reduceLife(int hits) {
         super.setLife(super.getLife() - hits);
+    }
+
+    public void setOpponent() {
+        if (this.getOpponents().size() > 0) {
+            Warrior opponent = this.getOpponents().get(new Random().nextInt(this.getOpponents().size()));
+            this.setOpponent(opponent);
+        } else {
+            this.setOpponent(null);
+        }
     }
 
     public void setIsEnemy(boolean isEnemy) {

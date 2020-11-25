@@ -15,9 +15,9 @@ import java.util.Random;
 public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
     private final ArrayList<BoardItem> refBoard;
     private int notMoveCounter = 0;
-    String musicFile = "src/asserts/sounds/swordraw.mp3";     // For example
-    Media sound = new Media(new File(musicFile).toURI().toString());
-    MediaPlayer mediaPlayer = new MediaPlayer(sound);
+    private final String musicFile = "src/asserts/sounds/swordraw.mp3";     // For example
+    private final Media sound = new Media(new File(musicFile).toURI().toString());
+    private final MediaPlayer mediaPlayer = new MediaPlayer(sound);
 
     public ContactWarrior(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace, String type) {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace, type);
@@ -25,32 +25,10 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
         this.setLastPosition(-1);
     }
 
-//    private void setInitPosition() {
-//        boolean flag = true;
-//        while (flag) {
-//            int index = new Random().nextInt(399);
-//            if (refBoard.get(index).isAvailable()) {
-//                this.setCurrentPosition(index);
-//                this.refBoard.get(index).setWarrior(this);
-//                flag = false;
-//            }
-//        }
-//    }
-
-    private void setOpponent() {
-        if (this.getOpponents().size() > 0) {
-            Warrior opponent = this.getOpponents().get(new Random().nextInt(this.getOpponents().size()));
-            this.setOpponent(opponent);
-        } else {
-            this.setOpponent(null);
-        }
-    }
-
     @Override
     public void run() {
         int iterations = 0;
         while (this.isRunning()) {
-
             int finalIterations = iterations;
             Platform.runLater(() -> {
                 if (finalIterations == 0) {

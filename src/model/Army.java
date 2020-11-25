@@ -33,6 +33,11 @@ public abstract class Army extends Thread {
                 '}';
     }
 
+    public abstract void setInitPosition();
+
+    public abstract void attack();
+
+
     public int getCurrentPosition() {
         return currentPosition;
     }
@@ -41,8 +46,6 @@ public abstract class Army extends Thread {
         this.currentPosition = currentPosition;
     }
 
-
-    public abstract void attack();
 
     public String getTroopName() {
         return this.name;

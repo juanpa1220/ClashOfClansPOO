@@ -16,6 +16,11 @@ public class Guard extends Army {
     }
 
     @Override
+    public void setInitPosition() {
+
+    }
+
+    @Override
     public void attack() {
 
     }
