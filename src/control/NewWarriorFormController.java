@@ -97,7 +97,8 @@ public class NewWarriorFormController {
                     alert.setContentText("The new warrior could not be saved");
                 }
                 alert.showAndWait();
-                this.onCancelAction();
+//                this.onCancelAction();
+                this.mainWindowController.updateWarriorPick();
 
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);

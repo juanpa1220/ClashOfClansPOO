@@ -48,7 +48,7 @@ public class MainWindowController {
         this.newWarriorFormController = NewWarriorFormController.getInstance();
         this.newWarriorFormController.setParentRoot(this);
 
-        this.game = new Game(boardController, warriorPickerController);
+        this.game = new Game(boardController, warriorPickerController, this);
         this.game.showWarriorsPick();
 
 
@@ -78,11 +78,18 @@ public class MainWindowController {
     public void setChildRoot(String childRoot) {
         if (childRoot.equals("warriorPicker")) {
             this.rootPane.getChildren().setAll(this.warriorPickerPane);
+            this.btnNewWarrior.setDisable(false);
+
         }
         if (childRoot.equals("board")) {
             this.rootPane.getChildren().setAll(this.boardPane);
             btnNewWarrior.setDisable(true);
         }
+    }
+
+    public void updateWarriorPick() {
+//        this.game.showWarriorsPick();
+        this.game.newLevel(this.game.getLevel());
     }
 
     private int loginDialog() {

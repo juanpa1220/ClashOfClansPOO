@@ -45,4 +45,12 @@ public class BoardController {
     public ArrayList<BoardItem> getBoard() {
         return board;
     }
+
+    public void clearBoard() {
+        for (BoardItem item : this.board) {
+            if (!item.isAvailable()) {
+                item.removeTroop();
+            }
+        }
+    }
 }

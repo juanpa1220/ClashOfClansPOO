@@ -22,6 +22,7 @@ public class WarriorPickerController {
     private Hashtable<String, Integer> selectedWarriors;
     private MainWindowController mainWindowController;
     private int remainingFields;
+    private ObservableList tilePaneList;
 
     public WarriorPickerController() {
         warriorPickerController = this;
@@ -49,7 +50,8 @@ public class WarriorPickerController {
             selectedWarriors.put(warrior.getTroopName(), 0);
         }
 
-        ObservableList list = this.tilePane.getChildren();
+        tilePaneList = this.tilePane.getChildren();
+        tilePaneList.clear();
         tilePane.setHgap(600);
         tilePane.setVgap(20);
 
@@ -97,12 +99,13 @@ public class WarriorPickerController {
             HBox temBox = new HBox(lblName, lblHousing, spinner);
             HBox.setMargin(lblName, new Insets(0, 0, 0, 50));
             temBox.setSpacing(90);
-            list.add(temBox);
+            tilePaneList.add(temBox);
         });
     }
 
     public void onStartGameAction(ActionEvent actionEvent) {
         mainWindowController.starGameLevel(this.selectedWarriors);
+        this.selectedWarriors.clear();
     }
 
     public void setParentRoot(MainWindowController mainWindowController) {

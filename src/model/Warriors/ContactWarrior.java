@@ -50,8 +50,8 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
 
     @Override
     public void makeNoise() {
-        mediaPlayer.play();
-        mediaPlayer.stop();
+//        mediaPlayer.play();
+//        mediaPlayer.stop();
     }
 
     @Override
