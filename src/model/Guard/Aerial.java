@@ -9,8 +9,4 @@ public class Aerial extends Guard {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace, scope, objectiveWarrior);
     }
 
-    @Override
-    public void killObjective() {
-
-    }
 }

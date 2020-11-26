@@ -14,8 +14,6 @@ public abstract class Army extends Thread {
     private final int housingSpace;
     private int currentPosition;
 
-
-
     public Army(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
         this.refBoard = refBoard;
         this.name = name;
@@ -25,7 +23,6 @@ public abstract class Army extends Thread {
         this.life = life;
         this.hits = hits;
         this.housingSpace = housingSpace;
-
     }
 
 

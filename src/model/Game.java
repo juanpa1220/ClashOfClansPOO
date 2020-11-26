@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import model.FileManager.JsonManager;
-import model.Guard.Guard;
 import model.Warriors.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,16 +19,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Game extends Thread {
-    private int level;
     BoardController boardController;
     WarriorPickerController warriorPickerController;
     MainWindowController mainWindowController;
     ArrayList<Warrior> genericWarriors = new ArrayList<>();
     ArrayList<Warrior> warriors = new ArrayList<>();
     ArrayList<Warrior> enemies = new ArrayList<>();
-    ArrayList<Guard> genericGuards = new ArrayList<>();
-    ArrayList<Guard> guards = new ArrayList();
+    private int level;
     private boolean hasStared = false;
+    //    private boolean isRunning = false;
     AtomicBoolean isRunning = new AtomicBoolean(true);
     AtomicBoolean isPaused = new AtomicBoolean(false);
     AtomicReference<Alert> alert = new AtomicReference<>();
@@ -42,22 +40,16 @@ public class Game extends Thread {
     }
 
     private void setUpWarriors(int level) {
-        // Get warrior info from json
         JSONArray temWarriors = JsonManager.jsonReader("src/asserts/docs/gameSettings/warriors.json");
         ArrayList<JSONObject> warriors = new ArrayList<>();
         if (temWarriors != null) {
-            // If warrior exists, add all in an array
             temWarriors.forEach(w -> warriors.add((JSONObject) w));
         }
         for (JSONObject warriorObject : warriors) {
-            // Get a single warrior
             JSONObject warrior = (JSONObject) warriorObject.get("warrior");
-            // Get appearance level from warrior
             String temAppearanceLevel = (String) warrior.get("appearanceLevel");
             int appearanceLevel = Integer.parseInt(temAppearanceLevel);
-            // If warrior level is allowed in level setUp
             if (level >= appearanceLevel) {
-                // Get warrior info
                 String name = (String) warrior.get("name");
                 String path = (String) warrior.get("imagePath");
                 String type = (String) warrior.get("type");
@@ -226,60 +218,6 @@ public class Game extends Thread {
                                 w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
                                 w.getType()));
                 remainingHousing -= w.getHousingSpace();
-            } else {
-                count++;
-                if (count > 5) {
-                    flag = false;
-                }
-            }
-        }
-    }
-
-    private void setRandomGuards() {
-        int numGuard = 3 + 3 * this.level;
-        int count = 0;
-        boolean flag = true;
-        while (flag) {
-            int index = new Random().nextInt(this.genericGuards.size());
-            Guard g = this.genericGuards.get(index);
-            if (numGuard == 0) {
-                flag = false;
-            } else if ("Aerial".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
-                this.guards.add(
-                        new Aerial(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
-                                g.getAppearanceLevel(), g.getLevel(), g.getLife(), g.getHits(), g.getHousingSpace(),
-                                g.getType()));
-                numGuard -= g.getHousingSpace();
-            } else if ("Archer".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
-                this.guards.add(
-                        new Archer(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
-                                g.getAppearanceLevel(), g.getLevel(), g.getLife(), g.getHits(), g.getHousingSpace(),
-                                g.getType()));
-                numGuard -= g.getHousingSpace();
-            } else if ("Bomb".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
-                this.guards.add(
-                        new Bomb(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
-                                g.getAppearanceLevel(), g.getLevel(), g.getLife(), g.getHits(), g.getHousingSpace(),
-                                g.getType()));
-                numGuard -= g.getHousingSpace();
-            } else if ("Cannon".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
-                this.guards.add(
-                        new Cannon(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
-                                g.getAppearanceLevel(), g.getLevel(), g.getLife(), g.getHits(), g.getHousingSpace(),
-                                g.getType()));
-                numGuard -= g.getHousingSpace();
-            } else if ("Mortar".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
-                this.guards.add(
-                        new Mortar(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
-                                g.getAppearanceLevel(), g.getLevel(), g.getLife(), g.getHits(), g.getHousingSpace(),
-                                g.getType()));
-                numGuard -= g.getHousingSpace();
-            } else if ("Wall".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
-                    this.guards.add(
-                            new Wall(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
-                                    g.getAppearanceLevel(), g.getLevel(), g.getLife(), g.getHits(), g.getHousingSpace(),
-                                    g.getType()));
-                    numGuard -= g.getHousingSpace();
             } else {
                 count++;
                 if (count > 5) {
