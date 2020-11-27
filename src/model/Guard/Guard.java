@@ -60,27 +60,25 @@ public class Guard extends Army {
     public void attack() {
         Warrior opponent = this.getOpponent();
         Object[] ow = this.objectiveWarrior;
-        for ( Object a : ow
-             ) {
-            System.out.println((String) a);
+        for (Object a : ow
+        ) {
+            //System.out.println((String) a);
         }
-       // boolean isAllowed = ow.contains(opponent.getType());
+        // boolean isAllowed = ow.contains(opponent.getType());
 
         //Before attack check that is in the Objective Warriors of the Guard
         //if(opponent.getType())
 
 
-        if(opponent!=null){
+        if (opponent != null) {
             opponent.reduceLife(this.getHits());
             if (opponent.getLife() <= 0) {
                 this.killOpponent(opponent);
                 this.setOpponent();
             }
         }
-
-    public Object getObjectiveWarrior() {
-        return objectiveWarrior;
     }
+
 
     public void killOpponent(Warrior warrior) {
         if (this.getOpponents().contains(warrior)) {
