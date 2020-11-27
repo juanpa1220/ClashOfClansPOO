@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 import model.FileManager.JsonManager;
 import model.Warriors.*;
+import model.Guard.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -20,11 +21,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Game extends Thread {
-    BoardController boardController;
-    WarriorPickerController warriorPickerController;
-    ArrayList<Warrior> genericWarriors = new ArrayList<>();
-    ArrayList<Warrior> warriors = new ArrayList<>();
-    ArrayList<Warrior> enemies = new ArrayList<>();
+
+    private final BoardController boardController;
+    private final WarriorPickerController warriorPickerController;
+    private final MainWindowController mainWindowController;
+    private final ArrayList<Warrior> genericWarriors = new ArrayList<>();
+    private final ArrayList<Guard> genericGuards = new ArrayList<>();
+    private final ArrayList<Guard> guards = new ArrayList<>();
+    private final ArrayList<IGrowUp> growingWarriors = new ArrayList<>();
+    public final ArrayList<Warrior> warriors = new ArrayList<>();
+    private final ArrayList<Warrior> enemies = new ArrayList<>();
+
     private int level;
 
     public Game(BoardController boardController, WarriorPickerController warriorPickerController) {
@@ -74,11 +81,92 @@ public class Game extends Thread {
         }
     }
 
+
+    private void setUpGuards(int level) {
+
+        ArrayList<JSONObject> guards = new ArrayList<>();
+
+
+
+    // Add Archer to Generic Guards
+
+    String pathArcher = "../asserts/imgs/archerTower.gif";
+    String[] archerObjectiveWarrior = {"AerialWarrior", "Beast",
+                "ContactWarrior", "Hero", "MediumRangeWarrior"};
+
+    Archer newGuardArcher = new Archer(boardController.getBoard(), "Archer", pathArcher,
+            1, this.level, 2, archerObjectiveWarrior,"Archer");
+    this.genericGuards.add(newGuardArcher);
+
+
+    //Add Aerial to Generic Guards
+
+    String pathAerial= "../asserts/imgs/aerial.gif";
+    String[] aerialObjectiveWarrior = {"AerialWarrior"};
+
+    Aerial newGuardAerial = new Aerial(boardController.getBoard(), "Aerial", pathAerial,
+            2, this.level, 2, aerialObjectiveWarrior,"Aerial");
+    this.genericGuards.add(newGuardAerial);
+
+    //Add Bomb to Generic Guards
+
+    String pathBomb= "../asserts/imgs/bomb.gif";
+    String[] bombObjectiveWarrior = {"Beast",
+            "ContactWarrior", "Hero", "MediumRangeWarrior"};
+
+    Bomb newGuardBomb = new Bomb(boardController.getBoard(), "Bomb", pathBomb,
+            3, this.level, 2, bombObjectiveWarrior,"Bomb");
+    this.genericGuards.add(newGuardBomb);
+
+    //Add Cannon to Generic Guards
+
+    String pathCannon= "../asserts/imgs/cannonshot.gif";
+    String[] cannonObjectiveWarrior = {"Beast",
+            "ContactWarrior", "Hero", "MediumRangeWarrior"};
+
+    Cannon newGuardCannon = new Cannon(boardController.getBoard(), "Cannon", pathCannon,
+            4, this.level, 2, archerObjectiveWarrior,"Cannon");
+    this.genericGuards.add(newGuardCannon);
+
+
+    //Add Mortar to Generic Guards
+
+    String pathMortar= "../asserts/imgs/mortar.gif";
+    String[] mortarObjectiveWarrior = {"Beast",
+            "ContactWarrior", "Hero", "MediumRangeWarrior"};
+
+    Mortar newGuardMortar = new Mortar(boardController.getBoard(), "Mortar", pathMortar,
+            5, this.level, 2, mortarObjectiveWarrior,"Mortar");
+    this.genericGuards.add(newGuardMortar);
+
+    //Add Wall to Generic Guards
+
+    String pathWall= "../asserts/imgs/wall.gif";
+    String[] wallObjectiveWarrior = {"AerialWarrior"};
+
+    Wall newGuardWall = new Wall(boardController.getBoard(), "Wall", pathWall,
+            1, this.level, 2, wallObjectiveWarrior,"Wall");
+    this.genericGuards.add(newGuardWall);
+
+
+
+    }
+
+        public void showWarriorsPick() {
+        this.setUpWarriors(this.level);
+        this.setUpGuards(this.level);
+        for (IGrowUp w : this.growingWarriors) {
+            w.growUp();
+        }
+        warriorPickerController.showWarriors(this.level, this.genericWarriors);
+        this.setRandomEnemies();
+        this.setRandomGuards();
+
+    }
+
+
     public void startLevel() {
         warriorPickerController.setLblLevel(this.level);
-        this.setUpWarriors(this.level);
-        warriorPickerController.showWarriors(this.level, this.genericWarriors);
-
         for (Warrior w : this.warriors) {
             w.setIsEnemy(false);
             w.setOpponents(this.enemies);
@@ -90,7 +178,73 @@ public class Game extends Thread {
             w.start();
         }
 
-        this.start();
+        for (Guard g : this.guards) {
+            g.setOpponents(this.warriors);
+            g.start();
+        }
+
+        if (!hasStared) {
+            this.start();
+            this.hasStared = true;
+        }
+        this.isPaused.set(false);
+    }
+
+    private void stopFight() {
+        for (Warrior w : this.warriors) {
+            w.setRunning(false);
+        }
+        for (Warrior w : this.enemies) {
+            w.setRunning(false);
+        }
+        for (Guard g : this.guards) {
+            g.setRunning(false);
+        }
+    }
+
+    public void newLevel(int level) {
+        this.isPaused.set(true);
+        this.stopFight();
+
+
+        this.level = level;
+        this.genericWarriors.clear();
+        this.warriors.clear();
+        this.enemies.clear();
+        this.guards.clear();
+        this.showWarriorsPick();
+        this.mainWindowController.setChildRoot("warriorPicker");
+        this.boardController.clearBoard();
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void pauseGame() {
+        this.isPaused.set(true);
+        for (Warrior w : this.warriors) {
+            w.setPaused(true);
+        }
+        for (Warrior w : this.enemies) {
+            w.setPaused(true);
+        }
+        for (Guard g : this.guards) {
+            g.setPaused(true);
+        }
+    }
+
+    public void resumeGame() {
+        this.isPaused.set(false);
+        for (Warrior w : this.warriors) {
+            w.setPaused(false);
+        }
+        for (Warrior w : this.enemies) {
+            w.setPaused(false);
+        }
+        for (Guard g : this.guards) {
+            g.setPaused(false);
+        }
     }
 
     @Override
@@ -139,6 +293,108 @@ public class Game extends Thread {
         }
     }
 
-    public void addWarrior() {
+
+    public ArrayList<Warrior> getGenericWarriors() {
+        return genericWarriors;
+    }
+
+
+    private void setRandomGuards(){
+        //Qty
+        int numGuard = 3 + 3 * this.level;
+        int count = 0;
+        boolean flag = true;
+        while (flag) {
+            //Get a random index
+            int index = new Random().nextInt(this.genericGuards.size());
+
+            // Get guard from generic guards at random position
+            Guard g = this.genericGuards.get(index);
+            if (numGuard == 0) {
+                flag = false;
+            } else if ("Aerial".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Aerial(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                 g.getObjectiveWarrior(),g.getType()));
+                numGuard -= g.getHousingSpace();
+            } else if ("Archer".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Archer(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(),g.getType()));
+                numGuard -= g.getHousingSpace();
+            } else if ("Bomb".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Bomb(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(),g.getType()));
+                numGuard -= g.getHousingSpace();
+            } else if ("Cannon".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Cannon(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(),g.getType()));
+                numGuard -= g.getHousingSpace();
+            } else if ("Mortar".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Mortar(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(),g.getType()));
+                numGuard -= g.getHousingSpace();
+            } else if ("Wall".equals(g.getType()) && numGuard - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Wall(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(),g.getType()));
+                numGuard -= g.getHousingSpace();
+
+            } else {
+                count++;
+                if (count > 5) {
+                    flag = false;
+                }
+            }
+        }
+    }
+
+    public void setSelectedWarriors(Hashtable<String, Integer> selectedWarriors) {
+        for (Warrior w : this.genericWarriors) {
+            int q = selectedWarriors.get(w.getTroopName());
+            for (int i = 0; i < q; i++) {
+                switch (w.getType()) {
+                    case "Contact":
+                        this.warriors.add(
+                                new ContactWarrior(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                        w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                        w.getType()));
+                        break;
+                    case "Medium Range":
+                        this.warriors.add(
+                                new MediumRangeWarriors(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                        w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                        w.getType()));
+                        break;
+                    case "Aerial":
+                        this.warriors.add(
+                                new AerialWarrior(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                        w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                        w.getType()));
+                        break;
+                    case "Beast":
+                        this.warriors.add(
+                                new Beast(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                        w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                        w.getType()));
+                        break;
+                    case "Hero":
+                        this.warriors.add(
+                                new Hero(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                        w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                        w.getType()));
+                        break;
+                }
+            }
+        }
     }
 }
