@@ -17,7 +17,7 @@
       "housing": "1",
       "imagePath": "..\/asserts\/imgs\/arquera.gif",
       "name": "Archer",
-      "type": "Contact",
+      "type": "Medium Range",
       "life": "5"
     }
   },

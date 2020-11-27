@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import model.FileManager.JsonManager;
-import model.Guard.Aerial;
 import model.Interfaces.IGrowUp;
 import model.Warriors.*;
 import org.json.simple.JSONArray;
@@ -60,12 +59,14 @@ public class Game extends Thread {
                 int housing = Integer.parseInt((String) warrior.get("housing"));
                 switch (type) {
                     case "Contact":
-                        ContactWarrior newWarrior = new ContactWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type);
-                        this.genericWarriors.add(newWarrior);
-                        this.growingWarriors.add(newWarrior);
+                        ContactWarrior contactWarrior = new ContactWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type);
+                        this.genericWarriors.add(contactWarrior);
+                        this.growingWarriors.add(contactWarrior);
                         break;
                     case "Medium Range":
-                        this.genericWarriors.add(new MediumRangeWarriors(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type));
+                        MediumRangeWarrior mediumRangeWarrior = new MediumRangeWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type);
+                        this.genericWarriors.add(mediumRangeWarrior);
+                        this.growingWarriors.add(mediumRangeWarrior);
                         break;
                     case "Aerial":
                         this.genericWarriors.add(new AerialWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type));
@@ -89,7 +90,6 @@ public class Game extends Thread {
         }
         warriorPickerController.showWarriors(this.level, this.genericWarriors);
         this.setRandomEnemies();
-
     }
 
     public void startLevel() {
@@ -225,7 +225,7 @@ public class Game extends Thread {
                 remainingHousing -= w.getHousingSpace();
             } else if ("Medium Range".equals(w.getType()) && remainingHousing - w.getHousingSpace() >= 0) {
                 this.enemies.add(
-                        new MediumRangeWarriors(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                        new MediumRangeWarrior(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
                                 w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
                                 w.getType()));
                 remainingHousing -= w.getHousingSpace();
@@ -273,7 +273,7 @@ public class Game extends Thread {
                         break;
                     case "Medium Range":
                         this.warriors.add(
-                                new MediumRangeWarriors(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                new MediumRangeWarrior(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
                                         w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
                                         w.getType()));
                         break;

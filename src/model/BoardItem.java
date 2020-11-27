@@ -8,7 +8,7 @@ import model.Warriors.Warrior;
 
 import java.awt.*;
 
-public class BoardItem  {
+public class BoardItem {
     private final Label label;
     private final int row;
     private final int col;
@@ -39,7 +39,7 @@ public class BoardItem  {
         this.label.setGraphic(null);
         String tem = "-fx-background-color: " + this.backgroundDefaultColor;
         this.label.setStyle(tem);
-        this.label.setStyle("-fx-border-color: #0e0e0e");
+        this.label.setStyle("-fx-border-color: #4A4F51");
         this.isAvailable = true;
     }
 

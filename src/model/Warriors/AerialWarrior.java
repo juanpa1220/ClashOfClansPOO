@@ -10,6 +10,11 @@ public class AerialWarrior extends Warrior {
     }
 
     @Override
+    public void onLoop() {
+
+    }
+
+    @Override
     public void attack() {
 
     }

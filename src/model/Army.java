@@ -47,7 +47,6 @@ public abstract class Army extends Thread {
         this.currentPosition = currentPosition;
     }
 
-
     public String getTroopName() {
         return this.name;
     }
