@@ -83,6 +83,76 @@ public class Game extends Thread {
     }
 
 
+    private void setUpGuards(int level) {
+
+        ArrayList<JSONObject> guards = new ArrayList<>();
+
+
+        // Add Archer to Generic Guards
+
+        String pathArcher = "../asserts/imgs/archerTower.gif";
+        String[] archerObjectiveWarrior = {"AerialWarrior", "Beast",
+                "Contact", "Hero", "MediumRangeWarrior"};
+
+        Archer newGuardArcher = new Archer(boardController.getBoard(), "Archer", pathArcher,
+                1, this.level, 2, archerObjectiveWarrior, "Archer");
+        this.genericGuards.add(newGuardArcher);
+
+
+        //Add Aerial to Generic Guards
+
+        String pathAerial = "../asserts/imgs/aerial.gif";
+        String[] aerialObjectiveWarrior = {"AerialWarrior"};
+
+        Aerial newGuardAerial = new Aerial(boardController.getBoard(), "Aerial", pathAerial,
+                2, this.level, 2, aerialObjectiveWarrior, "Aerial");
+        this.genericGuards.add(newGuardAerial);
+
+        //Add Bomb to Generic Guards
+
+        String pathBomb = "../asserts/imgs/bomb.gif";
+        String[] bombObjectiveWarrior = {"Beast",
+                "ContactWarrior", "Hero", "MediumRangeWarrior"};
+
+        Bomb newGuardBomb = new Bomb(boardController.getBoard(), "Bomb", pathBomb,
+                3, this.level, 2, bombObjectiveWarrior, "Bomb");
+        this.genericGuards.add(newGuardBomb);
+
+        //Add Cannon to Generic Guards
+
+        String pathCannon = "../asserts/imgs/cannonshot.gif";
+        String[] cannonObjectiveWarrior = {"Beast",
+                "ContactWarrior", "Hero", "MediumRangeWarrior"};
+
+        Cannon newGuardCannon = new Cannon(boardController.getBoard(), "Cannon", pathCannon,
+                4, this.level, 2, cannonObjectiveWarrior, "Cannon");
+        this.genericGuards.add(newGuardCannon);
+
+
+        //Add Mortar to Generic Guards
+
+        String pathMortar = "../asserts/imgs/mortar.gif";
+        String[] mortarObjectiveWarrior = {"Beast",
+                "ContactWarrior", "Hero", "MediumRangeWarrior"};
+
+        Mortar newGuardMortar = new Mortar(boardController.getBoard(), "Mortar", pathMortar,
+                5, this.level, 2, mortarObjectiveWarrior, "Mortar");
+        this.genericGuards.add(newGuardMortar);
+
+        //Add Wall to Generic Guards
+
+        String pathWall = "../asserts/imgs/wall.gif";
+        String[] wallObjectiveWarrior = {""};
+
+        Wall newGuardWall = new Wall(boardController.getBoard(), "Wall", pathWall,
+                1, this.level, 2, wallObjectiveWarrior, "Wall");
+        this.genericGuards.add(newGuardWall);
+
+
+        System.out.println(genericGuards);
+
+    }
+
     public void showWarriorsPick() {
         this.setUpWarriors(this.level);
         for (IGrowUp w : this.growingWarriors) {
@@ -130,6 +200,7 @@ public class Game extends Thread {
         this.genericWarriors.clear();
         this.warriors.clear();
         this.enemies.clear();
+        this.guards.clear();
         this.showWarriorsPick();
         this.mainWindowController.setChildRoot("warriorPicker");
         this.boardController.clearBoard();
@@ -208,6 +279,8 @@ public class Game extends Thread {
         }
     }
 
+
+
     private void setRandomEnemies() {
         int remainingHousing = 3 + 3 * this.level;
         int count = 0;
@@ -255,6 +328,65 @@ public class Game extends Thread {
             }
         }
     }
+
+    private void setRandomGuards() {
+        int remainingHousing = 3 + 3 * this.level;
+        int count = 0;
+        boolean flag = true;
+        while (flag) {
+            int index = new Random().nextInt(this.genericGuards.size());
+            Guard g = this.genericGuards.get(index);
+            if (remainingHousing == 0) {
+                flag = false;
+            } else if ("Aerial".equals(g.getType()) && remainingHousing - g.getHousingSpace() >= 0) {
+                this.guards.add(new Aerial(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                        g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                        g.getObjectiveWarrior(), g.getType()));
+                remainingHousing -= g.getHousingSpace();
+            } else if ("Archer".equals(g.getType()) && remainingHousing - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Archer(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(), g.getType()));
+                remainingHousing -= g.getHousingSpace();
+            }  else if ("Bomb".equals(g.getType()) && remainingHousing - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Bomb(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(), g.getType()));
+                remainingHousing -= g.getHousingSpace();
+            } else if ("Cannon".equals(g.getType()) && remainingHousing - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Cannon(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(), g.getType()));
+                remainingHousing -= g.getHousingSpace();
+
+            }else if ("Mortar".equals(g.getType()) && remainingHousing - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Mortar(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(), g.getType()));
+                remainingHousing -= g.getHousingSpace();
+
+            }
+            else if ("Wall".equals(g.getType()) && remainingHousing - g.getHousingSpace() >= 0) {
+                this.guards.add(
+                        new Wall(boardController.getBoard(), g.getTroopName(), g.getDirImage(),
+                                g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
+                                g.getObjectiveWarrior(), g.getType()));
+                remainingHousing -= g.getHousingSpace();
+
+            }
+            else {
+                count++;
+                if (count > 6) {
+                    flag = false;
+                }
+            }
+        }
+    }
+
 
     public ArrayList<Warrior> getGenericWarriors() {
         return genericWarriors;
