@@ -10,6 +10,7 @@ import model.FileManager.JsonManager;
 import model.Guard.*;
 import model.Interfaces.IGrowUp;
 import model.Warriors.*;
+import model.Guard.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -21,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Game extends Thread {
+
     private final BoardController boardController;
     private final WarriorPickerController warriorPickerController;
     private final MainWindowController mainWindowController;
@@ -30,6 +32,7 @@ public class Game extends Thread {
     private final ArrayList<IGrowUp> growingWarriors = new ArrayList<>();
     public final ArrayList<Warrior> warriors = new ArrayList<>();
     private final ArrayList<Warrior> enemies = new ArrayList<>();
+
     private int level;
     private boolean hasStared = false;
     private final AtomicBoolean isRunning = new AtomicBoolean(true);
@@ -158,11 +161,15 @@ public class Game extends Thread {
 
     public void showWarriorsPick() {
         this.setUpWarriors(this.level);
+        this.setUpGuards(this.level);
+
         for (IGrowUp w : this.growingWarriors) {
             w.growUp();
         }
         warriorPickerController.showWarriors(this.level, this.genericWarriors);
         this.setRandomEnemies();
+        this.setRandomGuards();
+
     }
 
     public void startLevel() {
@@ -178,6 +185,12 @@ public class Game extends Thread {
             w.start();
         }
 
+        for (Guard g : this.guards) {
+            g.setOpponents(this.warriors);
+            g.start();
+        }
+
+
         if (!hasStared) {
             this.start();
             this.hasStared = true;
@@ -192,6 +205,11 @@ public class Game extends Thread {
         for (Warrior w : this.enemies) {
             w.setRunning(false);
         }
+
+        for (Guard g : this.guards) {
+            g.setRunning(false);
+        }
+
     }
 
     public void newLevel(int level) {
@@ -221,6 +239,10 @@ public class Game extends Thread {
         for (Warrior w : this.enemies) {
             w.setPaused(true);
         }
+        for (Guard g : this.guards) {
+            g.setPaused(true);
+        }
+
     }
 
     public void resumeGame() {
@@ -231,6 +253,10 @@ public class Game extends Thread {
         for (Warrior w : this.enemies) {
             w.setPaused(false);
         }
+        for (Guard g : this.guards) {
+            g.setPaused(false);
+        }
+
     }
 
     @Override
@@ -323,6 +349,7 @@ public class Game extends Thread {
                                 w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
                                 w.getType()));
                 remainingHousing -= w.getHousingSpace();
+
             } else {
                 count++;
                 if (count > 5) {
@@ -408,6 +435,7 @@ public class Game extends Thread {
                         break;
                     case "Medium Range":
                         this.warriors.add(
+
                                 new MediumRangeWarrior(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
                                         w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
                                         w.getType()));

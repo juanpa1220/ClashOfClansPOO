@@ -38,9 +38,10 @@ public class Guard extends Army {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace);
 
         this.objectiveWarrior = objectiveWarrior;
+
     }
 
-    @Override
+
     public void setInitPosition() {
         boolean flag = true;
         while (flag) {
@@ -77,6 +78,8 @@ public class Guard extends Army {
             }
         }
 
+    public Object getObjectiveWarrior() {
+        return objectiveWarrior;
     }
 
     public void killOpponent(Warrior warrior) {
