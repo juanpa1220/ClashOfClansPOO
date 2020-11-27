@@ -25,7 +25,7 @@ public class Mortar extends Guard {
             int finalIterations = iterations;
             Platform.runLater(() -> {
                 if (finalIterations == 0) {
-                    super.setInitPosition();
+                    this.setInitPosition();
                 }
                 if (getOpponent() == null) {
                     setOpponent();

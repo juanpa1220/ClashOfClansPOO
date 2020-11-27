@@ -8,12 +8,21 @@ import java.util.Arrays;
 import java.util.List;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Guard extends Army {
     private Object[] objectiveWarrior;
-    private final String type;
+    private  String type;
     private ArrayList<Warrior> opponents;
     private Warrior opponent = null;
+
+    public String getType() {
+        return type;
+    }
+
+    public ArrayList<Warrior> getOpponents() {
+        return opponents;
+    }
 
     public Guard(ArrayList<BoardItem> refBoard,
                  String name,
@@ -27,9 +36,24 @@ public class Guard extends Army {
                  String type
     ) {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace);
-        Scope = scope;
+
         this.objectiveWarrior = objectiveWarrior;
     }
+
+    @Override
+    public void setInitPosition() {
+        boolean flag = true;
+        while (flag) {
+            int index = new Random().nextInt(399);
+            if (this.getRefBoard().get(index).isAvailable()) {
+                this.getRefBoard().get(index).setGuard(this);
+                this.setCurrentPosition(index);
+
+                flag = false;
+            }
+        }
+    }
+
 
     @Override
     public void attack() {
@@ -117,7 +141,6 @@ public class Guard extends Army {
     }
 
 
-    }
 
     public Object[] getObjectiveWarrior() {
         return objectiveWarrior;

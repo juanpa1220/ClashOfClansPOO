@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import model.FileManager.JsonManager;
+import model.Guard.*;
 import model.Interfaces.IGrowUp;
 import model.Warriors.*;
 import org.json.simple.JSONArray;
@@ -24,6 +25,8 @@ public class Game extends Thread {
     private final WarriorPickerController warriorPickerController;
     private final MainWindowController mainWindowController;
     private final ArrayList<Warrior> genericWarriors = new ArrayList<>();
+    private final ArrayList<Guard> genericGuards = new ArrayList<>();
+    private final ArrayList<Guard> guards = new ArrayList<>();
     private final ArrayList<IGrowUp> growingWarriors = new ArrayList<>();
     public final ArrayList<Warrior> warriors = new ArrayList<>();
     private final ArrayList<Warrior> enemies = new ArrayList<>();
