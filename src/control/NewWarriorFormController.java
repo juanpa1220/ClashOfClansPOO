@@ -83,7 +83,7 @@ public class NewWarriorFormController {
                 JSONObject newWarrior2 = new JSONObject();
                 newWarrior2.put("warrior", newWarrior);
 
-                boolean response = JsonManager.jsonWriter(newWarrior2);
+                boolean response = JsonManager.jsonWriter(newWarrior2, "src/asserts/docs/gameSettings/warriors.json");
                 Alert alert;
                 if (response) {
                     alert = new Alert(Alert.AlertType.INFORMATION);

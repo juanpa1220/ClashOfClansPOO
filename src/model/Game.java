@@ -7,6 +7,8 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import model.FileManager.JsonManager;
+import model.Guard.Aerial;
+import model.Interfaces.IGrowUp;
 import model.Warriors.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -19,18 +21,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Game extends Thread {
-    BoardController boardController;
-    WarriorPickerController warriorPickerController;
-    MainWindowController mainWindowController;
-    ArrayList<Warrior> genericWarriors = new ArrayList<>();
-    ArrayList<Warrior> warriors = new ArrayList<>();
-    ArrayList<Warrior> enemies = new ArrayList<>();
+    private final BoardController boardController;
+    private final WarriorPickerController warriorPickerController;
+    private final MainWindowController mainWindowController;
+    private final ArrayList<Warrior> genericWarriors = new ArrayList<>();
+    private final ArrayList<IGrowUp> growingWarriors = new ArrayList<>();
+    public final ArrayList<Warrior> warriors = new ArrayList<>();
+    private final ArrayList<Warrior> enemies = new ArrayList<>();
     private int level;
     private boolean hasStared = false;
-    //    private boolean isRunning = false;
-    AtomicBoolean isRunning = new AtomicBoolean(true);
-    AtomicBoolean isPaused = new AtomicBoolean(false);
-    AtomicReference<Alert> alert = new AtomicReference<>();
+    private final AtomicBoolean isRunning = new AtomicBoolean(true);
+    private final AtomicBoolean isPaused = new AtomicBoolean(false);
+    private final AtomicReference<Alert> alert = new AtomicReference<>();
 
     public Game(BoardController boardController, WarriorPickerController warriorPickerController, MainWindowController mainWindowController) {
         this.boardController = boardController;
@@ -60,7 +62,7 @@ public class Game extends Thread {
                     case "Contact":
                         ContactWarrior newWarrior = new ContactWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type);
                         this.genericWarriors.add(newWarrior);
-//                        this.enemies.add(new ContactWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type));
+                        this.growingWarriors.add(newWarrior);
                         break;
                     case "Medium Range":
                         this.genericWarriors.add(new MediumRangeWarriors(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type));
@@ -82,9 +84,12 @@ public class Game extends Thread {
 
     public void showWarriorsPick() {
         this.setUpWarriors(this.level);
+        for (IGrowUp w : this.growingWarriors) {
+            w.growUp();
+        }
         warriorPickerController.showWarriors(this.level, this.genericWarriors);
         this.setRandomEnemies();
-        System.out.println(this.enemies);
+
     }
 
     public void startLevel() {
@@ -117,6 +122,10 @@ public class Game extends Thread {
     }
 
     public void newLevel(int level) {
+        this.isPaused.set(true);
+        this.stopFight();
+
+
         this.level = level;
         this.genericWarriors.clear();
         this.warriors.clear();
@@ -128,6 +137,26 @@ public class Game extends Thread {
 
     public int getLevel() {
         return level;
+    }
+
+    public void pauseGame() {
+        this.isPaused.set(true);
+        for (Warrior w : this.warriors) {
+            w.setPaused(true);
+        }
+        for (Warrior w : this.enemies) {
+            w.setPaused(true);
+        }
+    }
+
+    public void resumeGame() {
+        this.isPaused.set(false);
+        for (Warrior w : this.warriors) {
+            w.setPaused(false);
+        }
+        for (Warrior w : this.enemies) {
+            w.setPaused(false);
+        }
     }
 
     @Override
@@ -227,6 +256,10 @@ public class Game extends Thread {
         }
     }
 
+    public ArrayList<Warrior> getGenericWarriors() {
+        return genericWarriors;
+    }
+
     public void setSelectedWarriors(Hashtable<String, Integer> selectedWarriors) {
         for (Warrior w : this.genericWarriors) {
             int q = selectedWarriors.get(w.getTroopName());
@@ -265,7 +298,5 @@ public class Game extends Thread {
                 }
             }
         }
-
     }
-
 }

@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public abstract class Army extends Thread {
     private final ArrayList<BoardItem> refBoard;
@@ -11,8 +10,10 @@ public abstract class Army extends Thread {
     private final int level;
     private int life;
     private int hits;
-    private final int housingSpace;
+    private int housingSpace;
     private int currentPosition;
+    private boolean running = true;
+    private boolean paused = false;
 
     public Army(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
         this.refBoard = refBoard;
@@ -85,5 +86,25 @@ public abstract class Army extends Thread {
 
     public void setHits(int hits) {
         this.hits = hits;
+    }
+
+    public void setHousingSpace(int housingSpace) {
+        this.housingSpace = housingSpace;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }

@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.BoardItem;
+import model.Interfaces.IGrowUp;
 import model.Interfaces.IMakeNoise;
 import model.Interfaces.IMove;
 
@@ -12,12 +13,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
+public class ContactWarrior extends Warrior implements IMove, IMakeNoise, IGrowUp {
     private final ArrayList<BoardItem> refBoard;
     private int notMoveCounter = 0;
-    private final String musicFile = "src/asserts/sounds/swordraw.mp3";     // For example
-    private final Media sound = new Media(new File(musicFile).toURI().toString());
-    private final MediaPlayer mediaPlayer = new MediaPlayer(sound);
+
 
     public ContactWarrior(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace, String type) {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace, type);
@@ -45,13 +44,30 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
                 e.printStackTrace();
             }
             iterations++;
+
+            while (this.isPaused()) {
+                try {
+                    sleep(100L);
+                } catch (InterruptedException ignored) {
+                }
+            }
         }
     }
 
+
+
     @Override
     public void makeNoise() {
-//        mediaPlayer.play();
-//        mediaPlayer.stop();
+        mediaPlayer.play();
+        mediaPlayer.stop();
+    }
+
+    @Override
+    public void growUp() {
+        this.setLife(this.getLife() * this.getLevel());
+        this.setHits(this.getHits() * this.getLevel());
+        this.setHousingSpace(this.getHousingSpace() * this.getLevel());
+
     }
 
     @Override
@@ -123,4 +139,5 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise {
 
         }
     }
+
 }

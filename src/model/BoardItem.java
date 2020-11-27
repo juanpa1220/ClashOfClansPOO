@@ -8,7 +8,7 @@ import model.Warriors.Warrior;
 
 import java.awt.*;
 
-public class BoardItem {
+public class BoardItem  {
     private final Label label;
     private final int row;
     private final int col;

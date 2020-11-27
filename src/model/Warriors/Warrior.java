@@ -12,8 +12,7 @@ public abstract class Warrior extends Army {
     private int lastPosition;
     private ArrayList<Warrior> opponents;
     private Warrior opponent = null;
-    private boolean running = true;
-    private boolean paused = false;
+
 
     public Warrior(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace, String type) {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace);
@@ -77,22 +76,6 @@ public abstract class Warrior extends Army {
 
     public void setOpponent(Warrior opponent) {
         this.opponent = opponent;
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
-
-    public boolean isPaused() {
-        return paused;
-    }
-
-    public void setPaused(boolean paused) {
-        this.paused = paused;
     }
 
     public int getLastPosition() {

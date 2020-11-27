@@ -104,7 +104,7 @@ public class WarriorPickerController {
     }
 
     public void onStartGameAction(ActionEvent actionEvent) {
-        mainWindowController.starGameLevel(this.selectedWarriors);
+        this.mainWindowController.starGameLevel(this.selectedWarriors);
         this.selectedWarriors.clear();
     }
 
