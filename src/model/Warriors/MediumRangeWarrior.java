@@ -2,16 +2,17 @@ package model.Warriors;
 
 import model.BoardItem;
 import model.Interfaces.IGrowUp;
-import model.Interfaces.IMakeNoise;
 import model.Interfaces.IMove;
 
 import java.util.ArrayList;
 
-public class ContactWarrior extends Warrior implements IMove, IMakeNoise, IGrowUp {
+public class MediumRangeWarrior extends Warrior implements IMove, IGrowUp {
+    int scope;
 
-    public ContactWarrior(ArrayList<BoardItem> refBoard, String name, String dirImage,
-                          int appearanceLevel, int level, int life, int hits, int housingSpace, String type) {
+    public MediumRangeWarrior(ArrayList<BoardItem> refBoard, String name, String dirImage,
+                              int appearanceLevel, int level, int life, int hits, int housingSpace, String type) {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace, type);
+        this.scope = 2 + level / 3;
     }
 
     @Override
@@ -21,17 +22,13 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise, IGrowU
 
     @Override
     public void run() {
-        super.defaultStart();
-    }
-
-    @Override
-    public void makeNoise() {
-        mediaPlayer.play();
-        mediaPlayer.stop();
+        defaultStart();
     }
 
     @Override
     public void growUp() {
+        this.scope = 1 + this.getLevel() / 3;
+
         this.setLife(this.getLife() + (this.getLevel() / 2));
         this.setHits(this.getHits() + (this.getLevel() / 2));
         this.setHousingSpace(this.getHousingSpace() + (this.getLevel() / 2));
@@ -39,13 +36,12 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise, IGrowU
 
     @Override
     public void attack() {
-//        this.makeNoise();
         super.defaultAttack();
     }
 
     @Override
     public void move() {
-        super.defaultMove(1);
+        super.defaultMove(this.scope);
     }
 
 }

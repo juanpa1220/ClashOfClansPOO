@@ -6,166 +6,159 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #4a525b#4a525b;"
-            stylesheets="@../asserts/styles/styledButtons.css" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.NewWarriorFormController">
+<AnchorPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #4a525b#4a525b;" stylesheets="@../asserts/styles/styledButtons.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.NewWarriorFormController">
     <VBox prefHeight="600.0" prefWidth="600.0">
-        <Separator prefWidth="200.0" style="-fx-border-color: #000000;"/>
+        <Separator prefWidth="200.0" style="-fx-border-color: #000000;" />
         <Pane prefHeight="50.0" prefWidth="600.0">
             <ImageView fitHeight="100.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true" x="170.0" y="10.0">
                 <image>
-                    <Image url="@../asserts/imgsGUI/addANewWarrior.png"/>
+                    <Image url="@../asserts/imgsGUI/addANewWarrior.png" />
                 </image>
             </ImageView>
         </Pane>
-        <Separator prefWidth="200.0" style="-fx-border-color: #000000;"/>
+        <Separator prefWidth="200.0" style="-fx-border-color: #000000;" />
         <HBox prefHeight="30.0" prefWidth="400.0">
             <VBox.margin>
-                <Insets top="20.0"/>
+                <Insets top="25.0" />
             </VBox.margin>
             <Label text="Name" textFill="#000000">
                 <HBox.margin>
-                    <Insets left="50.0"/>
+                    <Insets left="50.0" />
                 </HBox.margin>
                 <font>
-                    <Font name="Ayuthaya" size="18.0"/>
+                    <Font name="Ayuthaya" size="18.0" />
                 </font>
             </Label>
-            <TextField fx:id="txtName" minHeight="25.0" prefHeight="25.0" prefWidth="300.0"
-                       style="-fx-background-color: #93cacd;">
+            <TextField fx:id="txtName" minHeight="25.0" prefHeight="25.0" prefWidth="300.0" style="-fx-background-color: #93cacd;">
                 <HBox.margin>
-                    <Insets left="170.0" top="3.0"/>
+                    <Insets left="170.0" top="3.0" />
                 </HBox.margin>
             </TextField>
         </HBox>
         <HBox prefHeight="30.0" prefWidth="400.0">
             <VBox.margin>
-                <Insets top="20.0"/>
+                <Insets top="25.0" />
             </VBox.margin>
             <Label text="Image Path" textFill="#000000">
                 <HBox.margin>
-                    <Insets left="50.0"/>
+                    <Insets left="50.0" />
                 </HBox.margin>
                 <font>
-                    <Font name="Ayuthaya" size="18.0"/>
+                    <Font name="Ayuthaya" size="18.0" />
                 </font>
             </Label>
-            <TextField fx:id="txtImagePath" minHeight="25.0" prefHeight="25.0" prefWidth="300.0"
-                       style="-fx-background-color: #93cacd;" text="/asserts/imgs/">
+            <TextField fx:id="txtImagePath" minHeight="25.0" prefHeight="25.0" prefWidth="300.0" style="-fx-background-color: #93cacd;" text="/asserts/imgs/">
                 <HBox.margin>
-                    <Insets left="105.0" top="3.0"/>
+                    <Insets left="105.0" top="3.0" />
                 </HBox.margin>
             </TextField>
         </HBox>
         <HBox prefHeight="30.0" prefWidth="400.0">
             <VBox.margin>
-                <Insets top="20.0"/>
+                <Insets top="25.0" />
             </VBox.margin>
             <Label text="Type" textFill="#000000">
                 <HBox.margin>
-                    <Insets left="50.0"/>
+                    <Insets left="50.0" />
                 </HBox.margin>
                 <font>
-                    <Font name="Ayuthaya" size="18.0"/>
+                    <Font name="Ayuthaya" size="18.0" />
                 </font>
             </Label>
-            <ComboBox fx:id="comboBox" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="150.0"
-                      style="-fx-background-color: #93cacd;">
+            <ComboBox fx:id="comboBox" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: #93cacd;">
                 <HBox.margin>
-                    <Insets left="169.0"/>
+                    <Insets left="169.0" />
                 </HBox.margin>
             </ComboBox>
         </HBox>
         <HBox prefHeight="30.0" prefWidth="400.0">
             <VBox.margin>
-                <Insets top="20.0"/>
+                <Insets top="25.0" />
             </VBox.margin>
             <Label text="Appearance Level" textFill="#000000">
                 <HBox.margin>
-                    <Insets left="50.0"/>
+                    <Insets left="50.0" />
                 </HBox.margin>
                 <font>
-                    <Font name="Ayuthaya" size="18.0"/>
+                    <Font name="Ayuthaya" size="18.0" />
                 </font>
             </Label>
             <Spinner fx:id="appearLevelSpinner" prefHeight="25.0" prefWidth="100.0">
                 <HBox.margin>
-                    <Insets left="40.0"/>
+                    <Insets left="40.0" />
                 </HBox.margin>
             </Spinner>
         </HBox>
 
         <HBox prefHeight="30.0" prefWidth="400.0">
             <VBox.margin>
-                <Insets top="20.0"/>
+                <Insets top="24.0" />
             </VBox.margin>
             <Label text="Life" textFill="#000000">
                 <HBox.margin>
-                    <Insets left="50.0"/>
+                    <Insets left="50.0" />
                 </HBox.margin>
                 <font>
-                    <Font name="Ayuthaya" size="18.0"/>
+                    <Font name="Ayuthaya" size="18.0" />
                 </font>
             </Label>
             <Spinner fx:id="lifeSpinner" prefHeight="25.0" prefWidth="100.0">
                 <HBox.margin>
-                    <Insets left="170.0"/>
+                    <Insets left="170.0" />
                 </HBox.margin>
             </Spinner>
         </HBox>
 
         <HBox prefHeight="30.0" prefWidth="400.0">
             <VBox.margin>
-                <Insets top="20.0"/>
+                <Insets top="25.0" />
             </VBox.margin>
             <Label text="Hits per Second" textFill="#000000">
                 <HBox.margin>
-                    <Insets left="50.0"/>
+                    <Insets left="50.0" />
                 </HBox.margin>
                 <font>
-                    <Font name="Ayuthaya" size="18.0"/>
+                    <Font name="Ayuthaya" size="18.0" />
                 </font>
             </Label>
             <Spinner fx:id="hitsSpinner" prefHeight="25.0" prefWidth="100.0">
                 <HBox.margin>
-                    <Insets left="51.0"/>
+                    <Insets left="51.0" />
                 </HBox.margin>
             </Spinner>
         </HBox>
 
         <HBox prefHeight="30.0" prefWidth="400.0">
             <VBox.margin>
-                <Insets top="20.0"/>
+                <Insets top="25.0" />
             </VBox.margin>
             <Label text="Housing Space" textFill="#000000">
                 <HBox.margin>
-                    <Insets left="50.0"/>
+                    <Insets left="50.0" />
                 </HBox.margin>
                 <font>
-                    <Font name="Ayuthaya" size="18.0"/>
+                    <Font name="Ayuthaya" size="18.0" />
                 </font>
             </Label>
             <Spinner fx:id="housingSpaceSpinner" prefHeight="25.0" prefWidth="100.0">
                 <HBox.margin>
-                    <Insets left="72.0"/>
+                    <Insets left="72.0" />
                 </HBox.margin>
             </Spinner>
         </HBox>
         <HBox prefHeight="50.0" prefWidth="600.0">
-            <Button id="record-sales" mnemonicParsing="false" onAction="#onOkAction" prefHeight="50.0" prefWidth="100.0"
-                    text="OK">
+            <Button id="record-sales" mnemonicParsing="false" onAction="#onOkAction" prefHeight="50.0" prefWidth="100.0" text="OK">
                 <HBox.margin>
-                    <Insets left="175.0"/>
+                    <Insets left="175.0" />
                 </HBox.margin>
             </Button>
-            <Button id="record-sales" mnemonicParsing="false" onAction="#onCancelAction" prefHeight="50.0"
-                    prefWidth="100.0" text="CANCEL">
+            <Button id="record-sales" mnemonicParsing="false" onAction="#onCancelAction" prefHeight="50.0" prefWidth="100.0" text="CANCEL">
                 <HBox.margin>
-                    <Insets left="50.0"/>
+                    <Insets left="50.0" />
                 </HBox.margin>
             </Button>
             <padding>
-                <Insets top="50.0"/>
+                <Insets top="50.0" />
             </padding>
         </HBox>
     </VBox>

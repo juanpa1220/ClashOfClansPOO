@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    public static Stage refPrimaryStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -14,7 +13,6 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 640, 780));
         primaryStage.setResizable(false);
         primaryStage.show();
-        refPrimaryStage = primaryStage;
     }
 
     public static void main(String[] args) {

@@ -41,10 +41,13 @@ public class NewWarriorFormController {
         this.comboBox.setPromptText("Choose your warrior type");
         this.lifeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 10000, Integer.parseInt("0")));
+        this.lifeSpinner.setEditable(true);
         this.hitsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 10000, Integer.parseInt("0")));
+        this.hitsSpinner.setEditable(true);
         this.appearLevelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 15, Integer.parseInt("0")));
+        this.hitsSpinner.setEditable(true);
         this.housingSpaceSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0, 10000, Integer.parseInt("0")));
     }
@@ -80,7 +83,7 @@ public class NewWarriorFormController {
                 JSONObject newWarrior2 = new JSONObject();
                 newWarrior2.put("warrior", newWarrior);
 
-                boolean response = JsonManager.jsonWriter(newWarrior2);
+                boolean response = JsonManager.jsonWriter(newWarrior2, "src/asserts/docs/gameSettings/warriors.json");
                 Alert alert;
                 if (response) {
                     alert = new Alert(Alert.AlertType.INFORMATION);
@@ -94,7 +97,8 @@ public class NewWarriorFormController {
                     alert.setContentText("The new warrior could not be saved");
                 }
                 alert.showAndWait();
-                this.onCancelAction();
+//                this.onCancelAction();
+                this.mainWindowController.updateWarriorPick();
 
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);

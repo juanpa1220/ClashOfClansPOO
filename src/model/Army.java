@@ -10,8 +10,10 @@ public abstract class Army extends Thread {
     private final int level;
     private int life;
     private int hits;
-    private final int housingSpace;
-
+    private int housingSpace;
+    private int currentPosition;
+    private boolean running = true;
+    private boolean paused = false;
 
     public Army(ArrayList<BoardItem> refBoard, String name, String dirImage, int appearanceLevel, int level, int life, int hits, int housingSpace) {
         this.refBoard = refBoard;
@@ -28,11 +30,26 @@ public abstract class Army extends Thread {
     @Override
     public String toString() {
         return "Army{" +
-                "name='" + name + '\'' +
+                "name='" + this.name + '\'' +
                 '}';
     }
 
+    public abstract void setInitPosition();
+
     public abstract void attack();
+
+
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public String getTroopName() {
+        return this.name;
+    }
 
     public ArrayList<BoardItem> getRefBoard() {
         return refBoard;
@@ -68,5 +85,25 @@ public abstract class Army extends Thread {
 
     public void setHits(int hits) {
         this.hits = hits;
+    }
+
+    public void setHousingSpace(int housingSpace) {
+        this.housingSpace = housingSpace;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }

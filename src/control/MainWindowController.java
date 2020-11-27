@@ -8,12 +8,20 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.util.Pair;
+import model.FileManager.JsonManager;
 import model.Game;
+import model.Warriors.Warrior;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class MainWindowController {
@@ -27,7 +35,6 @@ public class MainWindowController {
     public AnchorPane boardPane;
     private AnchorPane newWarriorFormPane;
     public AnchorPane warriorPickerPane;
-
     public Game game;
     private NewWarriorFormController newWarriorFormController;
 
@@ -47,30 +54,29 @@ public class MainWindowController {
         this.newWarriorFormController = NewWarriorFormController.getInstance();
         this.newWarriorFormController.setParentRoot(this);
 
-        this.game = new Game(boardController, warriorPickerController);
+        this.game = new Game(boardController, warriorPickerController, this);
+        this.game.showWarriorsPick();
 
 
         btnNewWarrior.setDisable(false);
     }
 
-    public void starGameLevel() {
+    public void starGameLevel(Hashtable<String, Integer> selectedWarriors) {
         this.setChildRoot("board");
+        this.game.setSelectedWarriors(selectedWarriors);
         this.game.startLevel();
     }
 
     public void onActionNewWarrior() {
-        boolean response = this.loginDialog();
-//        boolean response = true;
-        if (response) {
+        int response = this.loginDialog();
+        if (response == 1) {
             this.newWarriorFormController.setUpComponents();
             this.rootPane.getChildren().setAll(this.newWarriorFormPane);
-            game.addWarrior();
-        } else {
+        } else if (response == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Unauthenticated");
             alert.setContentText("Username or password invalid");
-
             alert.showAndWait();
         }
     }
@@ -78,14 +84,27 @@ public class MainWindowController {
     public void setChildRoot(String childRoot) {
         if (childRoot.equals("warriorPicker")) {
             this.rootPane.getChildren().setAll(this.warriorPickerPane);
+            this.btnNewWarrior.setDisable(false);
+            this.btnSkipLevel.setDisable(true);
+            this.btnSaveGame.setDisable(true);
+            this.btnOpenGame.setDisable(false);
+
         }
         if (childRoot.equals("board")) {
             this.rootPane.getChildren().setAll(this.boardPane);
-            btnNewWarrior.setDisable(true);
+            this.btnNewWarrior.setDisable(true);
+            this.btnSkipLevel.setDisable(false);
+            this.btnSaveGame.setDisable(false);
+            this.btnOpenGame.setDisable(true);
         }
     }
 
-    private boolean loginDialog() {
+    public void updateWarriorPick() {
+//        this.game.showWarriorsPick();
+        this.game.newLevel(this.game.getLevel());
+    }
+
+    private int loginDialog() {
         // Create the custom dialog.
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Login");
@@ -136,12 +155,89 @@ public class MainWindowController {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
-        AtomicBoolean authenticate = new AtomicBoolean(false);
+        AtomicInteger response = new AtomicInteger(-1);
         result.ifPresent(usernamePassword -> {
             if (usernamePassword.getKey().equals("admin") && usernamePassword.getValue().equals("admin")) {
-                authenticate.set(true);
+                response.set(1);
+            } else {
+                response.set(0);
             }
         });
-        return authenticate.get();
+        return response.get();
+    }
+
+    public void onNewGameAction() {
+        this.game.newLevel(1);
+    }
+
+    public void onOpenGameAction() {
+        JSONArray game = null;
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Your Game");
+        fileChooser.setInitialDirectory(new File("src/asserts/docs/savedGames"));
+        File file = fileChooser.showOpenDialog(this.primaryStage.getScene().getWindow());
+        if (file != null) {
+            game = JsonManager.jsonReader(file.getAbsolutePath());
+        }
+        ArrayList<JSONObject> game2 = new ArrayList<>();
+        if (game != null) {
+            game.forEach(g -> game2.add((JSONObject) g));
+        }
+        if (game2.size() > 0) {
+            JSONObject temGame1 = game2.get(0);
+            JSONObject temGame = (JSONObject) temGame1.get("game");
+
+            int level = Integer.parseInt((String) temGame.get("level"));
+            ArrayList<String> temWarriors = (ArrayList<String>) temGame.get("warriors");   // convertir a lista
+            Hashtable<String, Integer> selectedWarriors = new Hashtable<>();
+            this.game.newLevel(level);
+            ArrayList<Warrior> generic = this.game.getGenericWarriors();
+            for (Warrior w : generic) {
+                selectedWarriors.put(w.getTroopName(), 0);
+            }
+            for (String w : temWarriors) {
+                selectedWarriors.put(w, selectedWarriors.get(w) + 1);
+            }
+            Alert alert;
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Congrats");
+            alert.setHeaderText("Your game has been opened successfully.");
+            alert.setContentText("You are going to resume your game in level " + level + ".");
+            alert.showAndWait();
+            this.starGameLevel(selectedWarriors);
+        }
+    }
+
+    public void onSaveGameAction() {
+        this.game.pauseGame();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Your Game");
+        fileChooser.setInitialDirectory(new File("src/asserts/docs/savedGames"));
+        File file = fileChooser.showSaveDialog(this.primaryStage.getScene().getWindow());
+        if (file != null) {
+            JSONObject gameTosave = new JSONObject();
+            gameTosave.put("level", String.valueOf(this.game.getLevel()));
+            ArrayList<String> warriors = new ArrayList<>();
+            for (Warrior w : this.game.warriors) {
+                warriors.add(w.getTroopName());
+            }
+            gameTosave.put("warriors", warriors);
+            JSONObject gameTosave2 = new JSONObject();
+            gameTosave2.put("game", gameTosave);
+
+            JsonManager.jsonWriteGame(gameTosave2, file.getAbsolutePath() + ".json");
+        }
+        Alert alert;
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Congrats");
+        alert.setHeaderText("Your game has been saved successfully.");
+        alert.setContentText("You can resume your game in this level whenever you want.");
+        alert.showAndWait();
+        this.game.resumeGame();
+    }
+
+    public void onSkipLevelAction() {
+        this.setChildRoot("warriorPicker");
+        this.game.newLevel(this.game.getLevel() + 1);
     }
 }

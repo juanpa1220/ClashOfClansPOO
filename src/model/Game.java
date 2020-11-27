@@ -1,22 +1,22 @@
 package model;
 
 import control.BoardController;
+import control.MainWindowController;
 import control.WarriorPickerController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.image.ImageView;
-import javafx.util.Pair;
 import model.FileManager.JsonManager;
+import model.Interfaces.IGrowUp;
 import model.Warriors.*;
 import model.Guard.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -33,10 +33,15 @@ public class Game extends Thread {
     private final ArrayList<Warrior> enemies = new ArrayList<>();
 
     private int level;
+    private boolean hasStared = false;
+    private final AtomicBoolean isRunning = new AtomicBoolean(true);
+    private final AtomicBoolean isPaused = new AtomicBoolean(false);
+    private final AtomicReference<Alert> alert = new AtomicReference<>();
 
-    public Game(BoardController boardController, WarriorPickerController warriorPickerController) {
+    public Game(BoardController boardController, WarriorPickerController warriorPickerController, MainWindowController mainWindowController) {
         this.boardController = boardController;
         this.warriorPickerController = warriorPickerController;
+        this.mainWindowController = mainWindowController;
         this.level = 1;
     }
 
@@ -59,27 +64,29 @@ public class Game extends Thread {
                 int housing = Integer.parseInt((String) warrior.get("housing"));
                 switch (type) {
                     case "Contact":
-                        ContactWarrior newWarrior = new ContactWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing);
-                        this.genericWarriors.add(newWarrior);
-                        this.warriors.add(new ContactWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing));
-                        this.enemies.add(new ContactWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing));
+                        ContactWarrior contactWarrior = new ContactWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type);
+                        this.genericWarriors.add(contactWarrior);
+                        this.growingWarriors.add(contactWarrior);
                         break;
                     case "Medium Range":
-                        this.genericWarriors.add(new MediumRangeWarriors(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing));
+                        MediumRangeWarrior mediumRangeWarrior = new MediumRangeWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type);
+                        this.genericWarriors.add(mediumRangeWarrior);
+                        this.growingWarriors.add(mediumRangeWarrior);
                         break;
                     case "Aerial":
-                        this.genericWarriors.add(new AerialWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing));
+                        this.genericWarriors.add(new AerialWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type));
                         break;
                     case "Beast":
-                        this.genericWarriors.add(new Beast(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing));
+                        this.genericWarriors.add(new Beast(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type));
                         break;
                     case "Hero":
-                        this.genericWarriors.add(new Hero(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing));
+                        this.genericWarriors.add(new Hero(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type));
                         break;
                 }
             }
         }
     }
+
 
 
     private void setUpGuards(int level) {
@@ -155,6 +162,7 @@ public class Game extends Thread {
         public void showWarriorsPick() {
         this.setUpWarriors(this.level);
         this.setUpGuards(this.level);
+
         for (IGrowUp w : this.growingWarriors) {
             w.growUp();
         }
@@ -163,7 +171,6 @@ public class Game extends Thread {
         this.setRandomGuards();
 
     }
-
 
     public void startLevel() {
         warriorPickerController.setLblLevel(this.level);
@@ -183,6 +190,7 @@ public class Game extends Thread {
             g.start();
         }
 
+
         if (!hasStared) {
             this.start();
             this.hasStared = true;
@@ -197,9 +205,11 @@ public class Game extends Thread {
         for (Warrior w : this.enemies) {
             w.setRunning(false);
         }
+
         for (Guard g : this.guards) {
             g.setRunning(false);
         }
+
     }
 
     public void newLevel(int level) {
@@ -232,6 +242,7 @@ public class Game extends Thread {
         for (Guard g : this.guards) {
             g.setPaused(true);
         }
+
     }
 
     public void resumeGame() {
@@ -245,57 +256,56 @@ public class Game extends Thread {
         for (Guard g : this.guards) {
             g.setPaused(false);
         }
+
     }
 
     @Override
     public void run() {
-        AtomicBoolean levelRunning = new AtomicBoolean(true);
-        AtomicReference<Alert> alert = new AtomicReference<>();
-        ImageView image = new ImageView(this.getClass().getResource("../asserts/imgsGUI/login.png").toString());
-        while (levelRunning.get()) {
-
+        while (isRunning.get()) {
             Platform.runLater(() -> {
+//                System.out.println("marcador:\tenemies: " + enemies.size() + "\twarriors:" + warriors.size());
                 if (enemies.size() == 0) {
-                    levelRunning.set(false);
+                    this.isPaused.set(true);
+                    this.stopFight();
                     alert.set(new Alert(Alert.AlertType.INFORMATION));
                     alert.get().setTitle("Congrats");
-                    alert.get().setHeaderText("You have won level" + this.level + ".");
+                    alert.get().setHeaderText("You have won level " + this.level + ".");
                     alert.get().setContentText("Good lucky in the next level");
-                }
-
-                if (warriors.size() == 0) {
-                    levelRunning.set(false);
-
+                    ButtonType btnOk = new ButtonType("Play Next Level");
+                    alert.get().getButtonTypes().setAll(btnOk);
+                    alert.get().showAndWait();
+                    newLevel(++this.level);
+                } else if (warriors.size() == 0) {
+                    this.isPaused.set(true);
+                    this.stopFight();
                     alert.set(new Alert(Alert.AlertType.CONFIRMATION));
                     alert.get().setTitle("Sorry");
                     alert.get().setHeaderText("You have lost level " + this.level + ".");
                     alert.get().setContentText("Do you want to play again this level?");
-
                     ButtonType btnPlayAgain = new ButtonType("Play Again");
                     ButtonType btnNextLevel = new ButtonType("Next Level");
-
                     alert.get().getButtonTypes().setAll(btnPlayAgain, btnNextLevel);
                     Optional<ButtonType> result = alert.get().showAndWait();
                     if (result.get() == btnPlayAgain) {
-                        System.out.println("play again");
+                        newLevel(this.level);
                     } else if (result.get() == btnNextLevel) {
-                        System.out.println("next level");
+                        newLevel(++this.level);
                     }
                 }
             });
-
             try {
                 sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            while (this.isPaused.get()) {
+                try {
+                    sleep(100L);
+                } catch (InterruptedException ignored) {
+                }
+            }
 
         }
-    }
-
-
-    public ArrayList<Warrior> getGenericWarriors() {
-        return genericWarriors;
     }
 
 
@@ -348,6 +358,47 @@ public class Game extends Thread {
                                 g.getAppearanceLevel(), g.getLevel(), g.getHousingSpace(),
                                 g.getObjectiveWarrior(),g.getType()));
                 numGuard -= g.getHousingSpace();
+            }}}
+
+    private void setRandomEnemies() {
+        int remainingHousing = 3 + 3 * this.level;
+        int count = 0;
+        boolean flag = true;
+        while (flag) {
+            int index = new Random().nextInt(this.genericWarriors.size());
+            Warrior w = this.genericWarriors.get(index);
+            if (remainingHousing == 0) {
+                flag = false;
+            } else if ("Contact".equals(w.getType()) && remainingHousing - w.getHousingSpace() >= 0) {
+                this.enemies.add(
+                        new ContactWarrior(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                w.getType()));
+                remainingHousing -= w.getHousingSpace();
+            } else if ("Medium Range".equals(w.getType()) && remainingHousing - w.getHousingSpace() >= 0) {
+                this.enemies.add(
+                        new MediumRangeWarrior(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                w.getType()));
+                remainingHousing -= w.getHousingSpace();
+            } else if ("Aerial".equals(w.getType()) && remainingHousing - w.getHousingSpace() >= 0) {
+                this.enemies.add(
+                        new AerialWarrior(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                w.getType()));
+                remainingHousing -= w.getHousingSpace();
+            } else if ("Beast".equals(w.getType()) && remainingHousing - w.getHousingSpace() >= 0) {
+                this.enemies.add(
+                        new Beast(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                w.getType()));
+                remainingHousing -= w.getHousingSpace();
+            } else if ("Hero".equals(w.getType()) && remainingHousing - w.getHousingSpace() >= 0) {
+                this.enemies.add(
+                        new Hero(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+                                w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
+                                w.getType()));
+                remainingHousing -= w.getHousingSpace();
 
             } else {
                 count++;
@@ -356,6 +407,11 @@ public class Game extends Thread {
                 }
             }
         }
+    }
+
+
+    public ArrayList<Warrior> getGenericWarriors() {
+        return genericWarriors;
     }
 
     public void setSelectedWarriors(Hashtable<String, Integer> selectedWarriors) {
@@ -371,7 +427,8 @@ public class Game extends Thread {
                         break;
                     case "Medium Range":
                         this.warriors.add(
-                                new MediumRangeWarriors(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
+
+                                new MediumRangeWarrior(boardController.getBoard(), w.getTroopName(), w.getDirImage(),
                                         w.getAppearanceLevel(), w.getLevel(), w.getLife(), w.getHits(), w.getHousingSpace(),
                                         w.getType()));
                         break;

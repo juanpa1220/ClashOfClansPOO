@@ -1,6 +1,5 @@
 package model.FileManager;
 
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -23,9 +22,7 @@ public class JsonManager {
         return null;
     }
 
-    public static boolean jsonWriter(JSONObject jsonObject) throws Exception {
-
-        String filename = "src/asserts/docs/gameSettings/warriors.json";
+    public static boolean jsonWriter(JSONObject jsonObject, String filename) {
         JSONArray oldFile = jsonReader(filename);
 
         if (oldFile != null) {
@@ -43,6 +40,20 @@ public class JsonManager {
             }
 
             return true;
+        }
+        return false;
+    }
+
+    public static boolean jsonWriteGame(JSONObject jsonObject, String filename) {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(jsonObject);
+
+        try (FileWriter file = new FileWriter(filename)) {
+            file.write(jsonArray.toJSONString());
+            file.flush();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return false;
     }
