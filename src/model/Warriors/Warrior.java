@@ -68,14 +68,16 @@ public abstract class Warrior extends Army {
         }
     }
 
-    public void defaultStart() {
+    public void defaultStart(boolean setOpponent) {
         int iterations = 0;
         while (this.isRunning()) {
             int finalIterations = iterations;
             Platform.runLater(() -> {
                 if (finalIterations == 0) {
                     setInitPosition();
-                    setOpponent();
+                    if (setOpponent) {
+                        setOpponent();
+                    }
                 }
                 this.onLoop();
             });
@@ -163,8 +165,7 @@ public abstract class Warrior extends Army {
                     newPosition.x = newPosition.x + new Random().nextInt((1 - -1) + 1) + -1;
                     newPosition.y = newPosition.y + new Random().nextInt((1 - -1) + 1) + -1;
                     index = newPosition.y * 20 + newPosition.x;
-
-                    if (refBoard.get(index).isAvailable()) {
+                    if (index >= 0 && index <= 255 && refBoard.get(index).isAvailable()) {
                         this.setNextPosition(index);
                         this.refBoard.get(index).setAvailable(false);
                         notMoveCounter = 0;
@@ -175,7 +176,6 @@ public abstract class Warrior extends Army {
         }
 
     }
-
 
     public void reduceLife(int hits) {
         super.setLife(super.getLife() - hits);

@@ -56,6 +56,7 @@ public class MainWindowController {
 
         this.game = new Game(boardController, warriorPickerController, this);
         this.game.showWarriorsPick();
+        this.game.playIntroSound();
 
 
         btnNewWarrior.setDisable(false);

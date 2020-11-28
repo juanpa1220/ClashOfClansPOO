@@ -21,7 +21,7 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise, IGrowU
 
     @Override
     public void run() {
-        super.defaultStart();
+        super.defaultStart(true);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ContactWarrior extends Warrior implements IMove, IMakeNoise, IGrowU
 
     @Override
     public void attack() {
-//        this.makeNoise();
+        this.makeNoise();
         super.defaultAttack();
     }
 

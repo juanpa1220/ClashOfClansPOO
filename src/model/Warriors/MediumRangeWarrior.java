@@ -22,7 +22,7 @@ public class MediumRangeWarrior extends Warrior implements IMove, IGrowUp {
 
     @Override
     public void run() {
-        defaultStart();
+        this.defaultStart(true);
     }
 
     @Override
