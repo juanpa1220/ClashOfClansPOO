@@ -34,6 +34,7 @@ public class Game extends Thread {
     private final ArrayList<Guard> genericGuards = new ArrayList<>();
     private final ArrayList<Guard> guards = new ArrayList<>();
     private final ArrayList<IGrowUp> growingWarriors = new ArrayList<>();
+    private final ArrayList<IGrowUp> growingGuards = new ArrayList<>();
     public final ArrayList<Warrior> warriors = new ArrayList<>();
     private final ArrayList<Warrior> enemies = new ArrayList<>();
 
@@ -117,6 +118,7 @@ public class Game extends Thread {
         Archer newGuardArcher = new Archer(boardController.getBoard(), "Archer", pathArcher,
                 1, this.level, 2, archerObjectiveWarrior, "Archer", 3);
         this.genericGuards.add(newGuardArcher);
+        this.growingGuards.add(newGuardArcher);
 
 
         //Add Aerial to Generic Guards
@@ -127,6 +129,7 @@ public class Game extends Thread {
         Aerial newGuardAerial = new Aerial(boardController.getBoard(), "Aerial", pathAerial,
                 2, this.level, 2, aerialObjectiveWarrior, "Aerial",4);
         this.genericGuards.add(newGuardAerial);
+        this.growingGuards.add(newGuardAerial);
 
         //Add Bomb to Generic Guards
 
@@ -137,6 +140,7 @@ public class Game extends Thread {
         Bomb newGuardBomb = new Bomb(boardController.getBoard(), "Bomb", pathBomb,
                 3, this.level, 2, bombObjectiveWarrior, "Bomb",6);
         this.genericGuards.add(newGuardBomb);
+        this.growingGuards.add(newGuardBomb);
 
         //Add Cannon to Generic Guards
 
@@ -147,6 +151,7 @@ public class Game extends Thread {
         Cannon newGuardCannon = new Cannon(boardController.getBoard(), "Cannon", pathCannon,
                 4, this.level, 2, cannonObjectiveWarrior, "Cannon",2);
         this.genericGuards.add(newGuardCannon);
+        this.growingGuards.add(newGuardCannon);
 
 
         //Add Mortar to Generic Guards
@@ -158,6 +163,7 @@ public class Game extends Thread {
         Mortar newGuardMortar = new Mortar(boardController.getBoard(), "Mortar", pathMortar,
                 5, this.level, 2, mortarObjectiveWarrior, "Mortar",8);
         this.genericGuards.add(newGuardMortar);
+        this.growingGuards.add(newGuardMortar);
 
         //Add Wall to Generic Guards
 
@@ -180,7 +186,11 @@ public class Game extends Thread {
         for (IGrowUp w : this.growingWarriors) {
             w.growUp();
         }
-        // What?
+
+        for (IGrowUp g : this.growingGuards) {
+            g.growUp();
+        }
+        ////////////////
         warriorPickerController.showWarriors(this.level, this.genericWarriors);
         this.setRandomEnemies();
         this.setRandomGuards();
