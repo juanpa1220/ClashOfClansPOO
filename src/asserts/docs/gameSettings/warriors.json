@@ -6,7 +6,7 @@
       "housing": "2",
       "imagePath": "..\/asserts\/imgs\/dragon2.gif",
       "name": "Dragon",
-      "type": "Contact",
+      "type": "Aerial",
       "life": "5"
     }
   },

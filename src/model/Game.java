@@ -6,6 +6,9 @@ import control.WarriorPickerController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import model.FileManager.JsonManager;
 import model.Guard.*;
 import model.Interfaces.IGrowUp;
@@ -14,6 +17,7 @@ import model.Guard.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Optional;
@@ -38,6 +42,14 @@ public class Game extends Thread {
     private final AtomicBoolean isRunning = new AtomicBoolean(true);
     private final AtomicBoolean isPaused = new AtomicBoolean(false);
     private final AtomicReference<Alert> alert = new AtomicReference<>();
+
+    private final String intro = "src/asserts/sounds/intro.mp3";
+    private final Media introSound = new Media(new File(intro).toURI().toString());
+    private final MediaPlayer introMediaPlayer = new MediaPlayer(introSound);
+
+    private final String combat = "src/asserts/sounds/combat.mp3";
+    private final Media combatSound = new Media(new File(combat).toURI().toString());
+    private final MediaPlayer combatMediaPlayer = new MediaPlayer(combatSound);
 
     public Game(BoardController boardController, WarriorPickerController warriorPickerController, MainWindowController mainWindowController) {
         this.boardController = boardController;
@@ -75,7 +87,9 @@ public class Game extends Thread {
                         this.growingWarriors.add(mediumRangeWarrior);
                         break;
                     case "Aerial":
-                        this.genericWarriors.add(new AerialWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type));
+                        AerialWarrior aerialWarrior = new AerialWarrior(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type);
+                        this.genericWarriors.add(aerialWarrior);
+                        this.growingWarriors.add(aerialWarrior);
                         break;
                     case "Beast":
                         this.genericWarriors.add(new Beast(boardController.getBoard(), name, path, appearanceLevel, level, life, hits, housing, type));
@@ -174,6 +188,8 @@ public class Game extends Thread {
     }
 
     public void startLevel() {
+        this.stopIntroSound();
+        this.playCombatSound();
         warriorPickerController.setLblLevel(this.level);
         for (Warrior w : this.warriors) {
             w.setIsEnemy(false);
@@ -214,6 +230,8 @@ public class Game extends Thread {
     }
 
     public void newLevel(int level) {
+        this.stopCombatSound();
+        this.playIntroSound();
         this.isPaused.set(true);
         this.stopFight();
 
@@ -469,4 +487,32 @@ public class Game extends Thread {
             }
         }
     }
+
+    public void playIntroSound() {
+        this.introMediaPlayer.setOnEndOfMedia(() -> {
+            this.introMediaPlayer.seek(Duration.ZERO);
+            this.introMediaPlayer.play();
+        });
+        this.introMediaPlayer.setVolume(0.5);
+        this.introMediaPlayer.play();
+    }
+
+    private void stopIntroSound() {
+        this.introMediaPlayer.stop();
+    }
+
+    private void playCombatSound() {
+        this.combatMediaPlayer.setOnEndOfMedia(() -> {
+            this.combatMediaPlayer.seek(Duration.ZERO);
+            this.combatMediaPlayer.play();
+        });
+        this.combatMediaPlayer.setVolume(0.3);
+        this.combatMediaPlayer.play();
+    }
+
+    private void stopCombatSound() {
+        this.combatMediaPlayer.stop();
+    }
+
+
 }
