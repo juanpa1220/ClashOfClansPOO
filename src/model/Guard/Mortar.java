@@ -13,9 +13,10 @@ public class Mortar extends Guard {
                   int level,
                   int housingSpace,
                   Object[] objectiveWarrior,
-                  String type
+                  String type,
+                  int scope
     ) {
-        super(refBoard, name, dirImage, appearanceLevel, level, 1000, 1000, housingSpace, objectiveWarrior,type);
+        super(refBoard, name, dirImage, appearanceLevel, level, 1000, 1000, housingSpace, objectiveWarrior,type, scope);
     }
     @Override
     public void run() {

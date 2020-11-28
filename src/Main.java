@@ -12,6 +12,7 @@ public class Main extends Application {
         primaryStage.setTitle("Herencia de Clanes");
         primaryStage.setScene(new Scene(root, 640, 780));
         primaryStage.setResizable(false);
+        primaryStage.setY(-10);
         primaryStage.show();
     }
 

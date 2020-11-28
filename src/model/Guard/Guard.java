@@ -15,6 +15,7 @@ public class Guard extends Army {
     private  String type;
     private ArrayList<Warrior> opponents;
     private Warrior opponent = null;
+    private int scope;
 
     public String getType() {
         return type;
@@ -33,9 +34,11 @@ public class Guard extends Army {
                  int hits,
                  int housingSpace,
                  Object[] objectiveWarrior,
-                 String type
+                 String type,
+                 int scope
     ) {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace);
+        this.scope = scope;
         this.type = type;
         this.objectiveWarrior = objectiveWarrior;
 
@@ -58,16 +61,19 @@ public class Guard extends Army {
 
     @Override
     public void attack() {
+        // how?
         Warrior opponent = this.getOpponent();
         Object[] ow = this.objectiveWarrior;
+        // Cast a trsing de object porque
         ArrayList<String> array = new ArrayList<>();
+        // For each warrior in array object,
         for (Object a : ow
         ) {
 
             array.add((String) a);
         }
         if(opponent!=null){
-            //Before attack check that is in the Objective Warriors of the Guard
+            //Before attack check if is in the Objective Warriors of the Guard
             boolean isAllowed = array.contains(opponent.getType());
 
             if(isAllowed){
@@ -150,5 +156,13 @@ public class Guard extends Army {
 
     public void setObjectiveWarrior(Object[] objectiveWarrior) {
         this.objectiveWarrior = objectiveWarrior;
+    }
+
+    public int getScope() {
+        return scope;
+    }
+
+    public void setScope(int scope) {
+        this.scope = scope;
     }
 }
