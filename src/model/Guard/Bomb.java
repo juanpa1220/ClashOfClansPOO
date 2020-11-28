@@ -2,10 +2,11 @@ package model.Guard;
 
 import javafx.application.Platform;
 import model.BoardItem;
+import model.Interfaces.IGrowUp;
 
 import java.util.ArrayList;
 
-public class Bomb extends Guard {
+public class Bomb extends Guard implements IGrowUp {
     public Bomb(ArrayList<BoardItem> refBoard,
                   String name,
                   String dirImage,
@@ -18,6 +19,11 @@ public class Bomb extends Guard {
     ) {
         super(refBoard, name, dirImage, appearanceLevel, level, 1000, 1000, housingSpace, objectiveWarrior,type,scope);
     }
+
+    @Override
+    public void growUp() {
+        this.setScope(3 + this.getLevel() / 3);  }
+
     @Override
     public void run() {
         int iterations = 0;
