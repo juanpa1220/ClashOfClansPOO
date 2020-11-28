@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import model.Army;
 import model.BoardItem;
 import model.Warriors.Warrior;
+
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.Random;
 
 public class Guard extends Army {
     private Object[] objectiveWarrior;
-    private  String type;
+    private String type;
     private ArrayList<Warrior> opponents;
     private Warrior opponent = null;
     private int scope;
@@ -24,6 +26,7 @@ public class Guard extends Army {
     public ArrayList<Warrior> getOpponents() {
         return opponents;
     }
+    private final ArrayList<BoardItem> refBoard;
 
     public Guard(ArrayList<BoardItem> refBoard,
                  String name,
@@ -41,7 +44,7 @@ public class Guard extends Army {
         this.scope = scope;
         this.type = type;
         this.objectiveWarrior = objectiveWarrior;
-
+        this.refBoard = refBoard;
     }
 
 
@@ -61,26 +64,51 @@ public class Guard extends Army {
 
     @Override
     public void attack() {
-        // how?
+
         Warrior opponent = this.getOpponent();
-        Object[] ow = this.objectiveWarrior;
-        // Cast a trsing de object porque
-        ArrayList<String> array = new ArrayList<>();
-        // For each warrior in array object,
-        for (Object a : ow
-        ) {
 
-            array.add((String) a);
+        Point opponentPosition = this.refBoard.get(this.getOpponent().getCurrentPosition()).getPosition();
+        Point myPosition = this.refBoard.get(this.getCurrentPosition()).getPosition();
+        ///////////////////////
+        boolean isAttack = false;
+
+        //Search for enemy in the scope range
+        for (int i = -this.scope; i < this.scope; i++) {
+            for (int j = this.scope; j > -this.scope; j--) {
+                if ((myPosition.x + i == opponentPosition.x && myPosition.y + i == opponentPosition.y) ||
+                        (myPosition.x + j == opponentPosition.x && myPosition.y + j == opponentPosition.y) ||
+                        (myPosition.x + i == opponentPosition.x && myPosition.y + j == opponentPosition.y) ||
+                        (myPosition.x + j == opponentPosition.x && myPosition.y + i == opponentPosition.y)
+                ) {
+                    isAttack = true;
+                    break;
+                }
+            }
         }
-        if(opponent!=null){
-            //Before attack check if is in the Objective Warriors of the Guard
-            boolean isAllowed = array.contains(opponent.getType());
+        //////////////////////
+        //If enemy founded , attack!!
+        if (isAttack) {
 
-            if(isAllowed){
-                opponent.reduceLife(this.getHits());
-                if (opponent.getLife() <= 0) {
-                    this.killOpponent(opponent);
-                    this.setOpponent();
+            if (opponent != null) {
+                //Before attack check if is in the Objective Warriors of the Guard
+                Object[] objectiveWarriors = this.objectiveWarrior;
+
+                ArrayList<String> array = new ArrayList<>();
+
+                for (Object warrior : objectiveWarriors
+                ) {
+                    //Include every warrior in the String Array!
+                    array.add((String) warrior);
+                }
+                boolean isAllowed = array.contains(opponent.getType());
+
+                if (isAllowed) {
+
+                    opponent.reduceLife(this.getHits());
+                    if (opponent.getLife() <= 0) {
+                        this.killOpponent(opponent);
+                        this.setOpponent();
+                    }
                 }
             }
         }
@@ -147,7 +175,6 @@ public class Guard extends Army {
     public Warrior getOpponent() {
         return opponent;
     }
-
 
 
     public Object[] getObjectiveWarrior() {
