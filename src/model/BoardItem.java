@@ -4,6 +4,7 @@ import control.BoardController;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.Guard.Guard;
 import model.Warriors.Warrior;
 
 import java.awt.*;
@@ -32,6 +33,11 @@ public class BoardItem {
         } else {
             this.label.setStyle("-fx-background-color: #2f76c3; -fx-border-color: #4a4f51");
         }
+        this.isAvailable = false;
+    }
+    public void setGuard(Guard guard) {
+        Image image = new Image(BoardController.class.getResourceAsStream(guard.getDirImage()));
+        this.label.setGraphic(new ImageView(image));
         this.isAvailable = false;
     }
 
