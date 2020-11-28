@@ -2,12 +2,12 @@
   {
     "warrior": {
       "hits": "1",
-      "appearanceLevel": "1",
-      "housing": "2",
+      "appearanceLevel": "4",
+      "housing": "5",
       "imagePath": "..\/asserts\/imgs\/dragon2.gif",
       "name": "Dragon",
       "type": "Aerial",
-      "life": "5"
+      "life": "15"
     }
   },
   {
@@ -29,18 +29,51 @@
       "imagePath": "..\/asserts\/imgs\/asesina.gif",
       "name": "dagger",
       "type": "Contact",
-      "life": "5"
+      "life": "8"
     }
   },
   {
     "warrior": {
       "hits": "1",
-      "appearanceLevel": "1",
-      "housing": "1",
+      "appearanceLevel": "2",
+      "housing": "2",
       "imagePath": "..\/asserts\/imgs\/saqueador.gif",
       "name": "Looter",
       "type": "Contact",
-      "life": "5"
+      "life": "6"
+    }
+  },
+  {
+    "warrior": {
+      "hits": "8",
+      "appearanceLevel": "8",
+      "housing": "8",
+      "imagePath": "..\/asserts\/imgs\/sombra.gif",
+      "name": "Shadow",
+      "type": "Hero",
+      "life": "32"
+    }
+  },
+  {
+    "warrior": {
+      "hits": "10",
+      "appearanceLevel": "10",
+      "housing": "10",
+      "imagePath": "..\/asserts\/imgs\/reptador.gif",
+      "name": "crawler",
+      "type": "Beast",
+      "life": "36"
+    }
+  },
+  {
+    "warrior": {
+      "hits": "5",
+      "appearanceLevel": "6",
+      "housing": "5",
+      "imagePath": "..\/asserts\/imgs\/trol.gif",
+      "name": "Troll",
+      "type": "Contact",
+      "life": "7"
     }
   }
 ]

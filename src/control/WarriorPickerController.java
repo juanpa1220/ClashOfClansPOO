@@ -43,7 +43,7 @@ public class WarriorPickerController {
     public void showWarriors(int level, ArrayList<Warrior> warriors) {
         this.setLblLevel(level);
         this.selectedWarriors = new Hashtable<>();
-        this.remainingFields = 3 + 3 * level;
+        this.remainingFields = 3 + 4 * level;
         this.setLblRemainingFields();
 
         for (Warrior warrior : warriors) {

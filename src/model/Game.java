@@ -344,5 +344,4 @@ public class Game extends Thread {
         this.combatMediaPlayer.stop();
     }
 
-
 }
