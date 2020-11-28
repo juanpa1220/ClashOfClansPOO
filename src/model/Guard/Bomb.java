@@ -1,12 +1,16 @@
 package model.Guard;
 
 import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.BoardItem;
 import model.Interfaces.IGrowUp;
+import model.Interfaces.IMakeNoise;
 
+import java.io.File;
 import java.util.ArrayList;
 
-public class Bomb extends Guard implements IGrowUp {
+public class Bomb extends Guard implements IGrowUp, IMakeNoise {
     public Bomb(ArrayList<BoardItem> refBoard,
                   String name,
                   String dirImage,
@@ -25,6 +29,15 @@ public class Bomb extends Guard implements IGrowUp {
         this.setScope(3 + this.getLevel() / 3);  }
 
     @Override
+    public void makeNoise(){
+        String musicFile = "src/asserts/sounds/mortar.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+        mediaPlayer.stop();
+    }
+
+    @Override
     public void run() {
         int iterations = 0;
         while (this.isRunning()) {
@@ -38,6 +51,8 @@ public class Bomb extends Guard implements IGrowUp {
                     setOpponent();
                 }
                 attack();
+                makeNoise();
+
             });
             try {
                 sleep(1000);
