@@ -1,10 +1,13 @@
 package model.Guard;
 
 import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.BoardItem;
 import model.Interfaces.IGrowUp;
 import model.Interfaces.IMakeNoiseGuard;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Bomb extends Guard implements IGrowUp, IMakeNoiseGuard {

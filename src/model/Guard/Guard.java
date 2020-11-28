@@ -122,6 +122,7 @@ public class Guard extends Army {
             super.getRefBoard().get(warrior.getNextPosition()).removeTroop();
             this.getOpponents().remove(warrior);
             warrior.setRunning(false);
+
         }
     }
 
