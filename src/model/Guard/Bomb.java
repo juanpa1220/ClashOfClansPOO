@@ -3,10 +3,11 @@ package model.Guard;
 import javafx.application.Platform;
 import model.BoardItem;
 import model.Interfaces.IGrowUp;
+import model.Interfaces.IMakeNoiseGuard;
 
 import java.util.ArrayList;
 
-public class Bomb extends Guard implements IGrowUp {
+public class Bomb extends Guard implements IGrowUp, IMakeNoiseGuard {
     public Bomb(ArrayList<BoardItem> refBoard,
                   String name,
                   String dirImage,
@@ -25,6 +26,12 @@ public class Bomb extends Guard implements IGrowUp {
         this.setScope(3 + this.getLevel() / 3);  }
 
     @Override
+    public void makeNoise() {
+        mediaPlayer.play();
+        mediaPlayer.stop();
+    }
+
+    @Override
     public void run() {
         int iterations = 0;
         while (this.isRunning()) {
@@ -38,6 +45,7 @@ public class Bomb extends Guard implements IGrowUp {
                     setOpponent();
                 }
                 attack();
+                makeNoise();
             });
             try {
                 sleep(1000);
