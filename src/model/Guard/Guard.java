@@ -36,7 +36,7 @@ public class Guard extends Army {
                  String type
     ) {
         super(refBoard, name, dirImage, appearanceLevel, level, life, hits, housingSpace);
-
+        this.type = type;
         this.objectiveWarrior = objectiveWarrior;
 
     }
@@ -60,21 +60,22 @@ public class Guard extends Army {
     public void attack() {
         Warrior opponent = this.getOpponent();
         Object[] ow = this.objectiveWarrior;
+        ArrayList<String> array = new ArrayList<>();
         for (Object a : ow
         ) {
-            //System.out.println((String) a);
+
+            array.add((String) a);
         }
-        // boolean isAllowed = ow.contains(opponent.getType());
+        if(opponent!=null){
+            //Before attack check that is in the Objective Warriors of the Guard
+            boolean isAllowed = array.contains(opponent.getType());
 
-        //Before attack check that is in the Objective Warriors of the Guard
-        //if(opponent.getType())
-
-
-        if (opponent != null) {
-            opponent.reduceLife(this.getHits());
-            if (opponent.getLife() <= 0) {
-                this.killOpponent(opponent);
-                this.setOpponent();
+            if(isAllowed){
+                opponent.reduceLife(this.getHits());
+                if (opponent.getLife() <= 0) {
+                    this.killOpponent(opponent);
+                    this.setOpponent();
+                }
             }
         }
     }

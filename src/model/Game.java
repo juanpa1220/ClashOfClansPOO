@@ -155,7 +155,7 @@ public class Game extends Thread {
         this.genericGuards.add(newGuardWall);
 
 
-        System.out.println(genericGuards);
+        System.out.println(this.genericGuards);
 
     }
 
@@ -366,6 +366,11 @@ public class Game extends Thread {
         while (flag) {
             int index = new Random().nextInt(this.genericGuards.size());
             Guard g = this.genericGuards.get(index);
+
+            if(g.getAppearanceLevel()>this.level){
+
+            }else{
+                System.out.println(g.getType());
             if (remainingHousing == 0) {
                 flag = false;
             } else if ("Aerial".equals(g.getType()) && remainingHousing - g.getHousingSpace() >= 0) {
@@ -413,7 +418,7 @@ public class Game extends Thread {
                 if (count > 6) {
                     flag = false;
                 }
-            }
+            }}
         }
     }
 
